@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Coffee — OR Coffee Management</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #1a1a2e;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            text-align: center;
+            padding: 3rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #c8a96e;
+        }
+        .subtitle {
+            font-size: 1.1rem;
+            color: #888;
+            margin-bottom: 3rem;
+        }
+        .cards {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .card {
+            background: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 12px;
+            padding: 2rem 2.5rem;
+            width: 280px;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #c8a96e;
+        }
+        .card-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .card h2 { font-size: 1.3rem; margin-bottom: 0.5rem; color: #c8a96e; }
+        .card p { font-size: 0.9rem; color: #999; line-height: 1.5; }
+        .badge {
+            display: inline-block;
+            background: #0f3460;
+            color: #c8a96e;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-top: 0.75rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>☕ Smart Coffee</h1>
+        <p class="subtitle">OR Coffee Machine — Event Sourcing + CQRS Demo</p>
+        <div class="cards">
+            <a href="/operations.html" class="card">
+                <div class="card-icon">🖥️</div>
+                <h2>Coffee Terminal</h2>
+                <p>Dispense coffee and refill beans. Command side — every action is recorded as an immutable event.</p>
+                <span class="badge">Commands</span>
+            </a>
+            <a href="/projections.html" class="card">
+                <div class="card-icon">📊</div>
+                <h2>Controlling Dashboard</h2>
+                <p>Live projections built from the event stream. Bean levels, user statistics, and caffeine alerts.</p>
+                <span class="badge">Queries / Projections</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

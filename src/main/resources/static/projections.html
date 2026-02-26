@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controlling Dashboard</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #1a1a2e;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .header a { color: #888; text-decoration: none; font-size: 0.9rem; }
+        .header a:hover { color: #c8a96e; }
+        h1 { font-size: 1.8rem; color: #c8a96e; }
+        .refresh-info {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        .alert-banner {
+            display: none;
+            background: #4a1a00;
+            border: 2px solid #ff6b00;
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #ffcc88;
+            font-size: 1rem;
+        }
+        .alert-banner.visible { display: block; }
+        .alert-banner h3 { font-size: 1rem; margin-bottom: 0.5rem; color: #ff9944; }
+        .alert-item { margin: 0.3rem 0; }
+        .layout {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1200px;
+        }
+        .panel {
+            background: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 12px;
+            padding: 1.5rem;
+            flex: 1;
+            min-width: 300px;
+        }
+        h2 {
+            font-size: 1.05rem;
+            color: #c8a96e;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #0f3460;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th {
+            text-align: left;
+            padding: 0.5rem 0.75rem;
+            color: #888;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #0f3460;
+        }
+        td {
+            padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid #0d1f3c;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #0f2a4a; }
+        .bean-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .bean-bar-bg {
+            flex: 1;
+            height: 8px;
+            background: #0f3460;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .bean-bar {
+            height: 100%;
+            background: #c8a96e;
+            border-radius: 4px;
+            transition: width 0.4s;
+        }
+        .bean-bar.low { background: #f44336; }
+        .bean-bar.medium { background: #ff9800; }
+        .bean-count { font-size: 0.8rem; color: #aaa; min-width: 60px; }
+        .type-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+        .pill {
+            background: #0f3460;
+            border-radius: 20px;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            color: #c8a96e;
+        }
+        .empty { color: #555; font-style: italic; font-size: 0.9rem; padding: 1rem 0; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/">← Home</a>
+        <h1>📊 Controlling Dashboard</h1>
+    </div>
+    <p class="refresh-info">Auto-refreshes every 3 seconds</p>
+
+    <!-- Caffeine Alert Banner -->
+    <div id="alert-banner" class="alert-banner">
+        <h3>⚠ Caffeine Alert</h3>
+        <div id="alert-list"></div>
+    </div>
+
+    <div class="layout">
+        <!-- Bean Levels Panel -->
+        <div class="panel">
+            <h2>Bean Levels</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Machine</th>
+                        <th>Beans</th>
+                        <th>Cups</th>
+                    </tr>
+                </thead>
+                <tbody id="bean-table-body">
+                    <tr><td colspan="3" class="empty">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- User Stats Panel -->
+        <div class="panel">
+            <h2>User Statistics</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Total</th>
+                        <th>Breakdown</th>
+                    </tr>
+                </thead>
+                <tbody id="stats-table-body">
+                    <tr><td colspan="3" class="empty">No data yet</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const MAX_BEANS = 60; // approximate max for bar display
+
+        async function refresh() {
+            await Promise.all([loadBeanLevels(), loadUserStats(), loadCaffeineAlerts()]);
+        }
+
+        async function loadBeanLevels() {
+            try {
+                const res = await fetch('/api/projections/bean-levels');
+                const data = await res.json();
+                const tbody = document.getElementById('bean-table-body');
+
+                if (!data.length) {
+                    tbody.innerHTML = '<tr><td colspan="3" class="empty">No machines registered</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = data.map(m => {
+                    const pct = Math.min(100, Math.round((m.beansAvailable / MAX_BEANS) * 100));
+                    const colorClass = pct < 20 ? 'low' : pct < 40 ? 'medium' : '';
+                    return `<tr>
+                        <td>${m.name}</td>
+                        <td>
+                            <div class="bean-bar-container">
+                                <div class="bean-bar-bg">
+                                    <div class="bean-bar ${colorClass}" style="width:${pct}%"></div>
+                                </div>
+                                <span class="bean-count">${m.beansAvailable} beans</span>
+                            </div>
+                        </td>
+                        <td>${m.cupsProduced}</td>
+                    </tr>`;
+                }).join('');
+            } catch (e) { console.error('Bean levels error', e); }
+        }
+
+        async function loadUserStats() {
+            try {
+                const res = await fetch('/api/projections/user-stats');
+                const data = await res.json();
+                const tbody = document.getElementById('stats-table-body');
+
+                if (!data.length) {
+                    tbody.innerHTML = '<tr><td colspan="3" class="empty">No coffees dispensed yet</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = data
+                    .sort((a, b) => b.totalCups - a.totalCups)
+                    .map(s => {
+                        const pills = Object.entries(s.byType)
+                            .map(([type, count]) =>
+                                `<span class="pill">${count}x ${type.replace('_', ' ')}</span>`)
+                            .join('');
+                        return `<tr>
+                            <td><strong>${s.user}</strong></td>
+                            <td>${s.totalCups}</td>
+                            <td><div class="type-pills">${pills}</div></td>
+                        </tr>`;
+                    }).join('');
+            } catch (e) { console.error('User stats error', e); }
+        }
+
+        async function loadCaffeineAlerts() {
+            try {
+                const res = await fetch('/api/projections/caffeine-alerts');
+                const data = await res.json();
+                const banner = document.getElementById('alert-banner');
+                const alertList = document.getElementById('alert-list');
+
+                if (!data.length) {
+                    banner.classList.remove('visible');
+                    return;
+                }
+
+                banner.classList.add('visible');
+                alertList.innerHTML = data.map(a =>
+                    `<div class="alert-item">⚠ Warning: <strong>${a.user}</strong> is at risk of caffeine overdose! (${a.doubleEspressosInLast2Hours}x Double Espresso in 2h)</div>`
+                ).join('');
+            } catch (e) { console.error('Caffeine alerts error', e); }
+        }
+
+        refresh();
+        setInterval(refresh, 3000);
+    </script>
+</body>
+</html>
