@@ -1,4 +1,4 @@
-package com.draeger.smartcoffee.application.service;
+package com.draeger.smartcoffee.adapter.out.memory;
 
 import com.draeger.smartcoffee.application.port.in.BeanLevelDto;
 import com.draeger.smartcoffee.application.port.in.CaffeineAlertDto;
@@ -21,12 +21,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class CoffeeMachineQueryService implements CoffeeMachineQueryUseCase {
+public class InMemoryCoffeeMachineQueryService implements CoffeeMachineQueryUseCase {
 
     private final EventStore eventStore;
     private final CoffeeMachineRepository repository;
 
-    public CoffeeMachineQueryService(EventStore eventStore, CoffeeMachineRepository repository) {
+    public InMemoryCoffeeMachineQueryService(EventStore eventStore, CoffeeMachineRepository repository) {
         this.eventStore = eventStore;
         this.repository = repository;
     }

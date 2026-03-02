@@ -1,20 +1,22 @@
-package com.draeger.smartcoffee.adapter.out;
+package com.draeger.smartcoffee.adapter.out.postgres;
 
 import com.draeger.smartcoffee.application.port.out.CoffeeMachineRepository;
 import com.draeger.smartcoffee.application.port.out.EventStore;
 import com.draeger.smartcoffee.domain.event.DomainEvent;
 import com.draeger.smartcoffee.domain.model.CoffeeMachine;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
-@Component
-public class InMemoryEventSourcedRepository implements CoffeeMachineRepository {
+@Primary
+@Repository
+public class PostgresEventSourcedRepository implements CoffeeMachineRepository {
 
     private final EventStore eventStore;
 
-    public InMemoryEventSourcedRepository(EventStore eventStore) {
+    public PostgresEventSourcedRepository(EventStore eventStore) {
         this.eventStore = eventStore;
     }
 
@@ -26,6 +28,6 @@ public class InMemoryEventSourcedRepository implements CoffeeMachineRepository {
 
     @Override
     public boolean exists(UUID machineId) {
-        return eventStore.getAllMachineIds().contains(machineId);
+        return !eventStore.loadEvents(machineId).isEmpty();
     }
 }

@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class CoffeeMachine {
 
-    private static final int MAX_BEANS_CAPACITY = 60;
+    private static final int MAX_BEANS_CAPACITY = 100;
 
     private UUID id;
     private String name;
@@ -46,6 +46,7 @@ public class CoffeeMachine {
             beansAvailable - beansRequired,
             Instant.now()
         );
+
         apply(event);
         return event;
     }
@@ -63,14 +64,16 @@ public class CoffeeMachine {
     }
 
     private void apply(DomainEvent event) {
-        if (event instanceof MachineRegistered e) {
-            this.id = e.getMachineId();
-            this.name = e.getName();
-            this.beansAvailable = e.getInitialBeans();
-        } else if (event instanceof CoffeeProduced e) {
-            this.beansAvailable = e.getBeansAvailableAfter();
-        } else if (event instanceof BeansRefilled e) {
-            this.beansAvailable = e.getBeansAvailableAfter();
+        switch (event) {
+            case MachineRegistered e -> {
+                this.id = e.getMachineId();
+                this.name = e.getName();
+                this.beansAvailable = e.getInitialBeans();
+            }
+            case CoffeeProduced e -> this.beansAvailable = e.getBeansAvailableAfter();
+            case BeansRefilled e -> this.beansAvailable = e.getBeansAvailableAfter();
+            case null, default -> {
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-package com.draeger.smartcoffee.adapter.out;
+package com.draeger.smartcoffee.adapter.out.memory;
 import com.draeger.smartcoffee.application.port.out.EventStore;
 import com.draeger.smartcoffee.domain.event.DomainEvent;
 import tools.jackson.databind.ObjectMapper;
