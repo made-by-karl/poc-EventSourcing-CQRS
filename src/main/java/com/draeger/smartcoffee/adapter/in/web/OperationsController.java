@@ -6,6 +6,7 @@ import com.draeger.smartcoffee.application.port.in.CoffeeMachineCommandUseCase;
 import com.draeger.smartcoffee.application.port.in.CoffeeMachineQueryUseCase;
 import com.draeger.smartcoffee.application.port.in.MachineDto;
 import com.draeger.smartcoffee.domain.exception.InsufficientBeansException;
+import com.draeger.smartcoffee.domain.exception.OptimisticLockException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,8 @@ public class OperationsController {
             return ResponseEntity.ok().build();
         } catch (InsufficientBeansException e) {
             return ResponseEntity.status(409).body(Map.of("error", e.getMessage()));
+        } catch (OptimisticLockException e) {
+            return ResponseEntity.status(409).body(Map.of("error", e.getMessage(), "hint", "Retry the command"));
         }
     }
 

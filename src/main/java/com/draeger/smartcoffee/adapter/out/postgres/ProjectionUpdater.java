@@ -25,7 +25,7 @@ public class ProjectionUpdater {
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void on(DomainEventPublishedEvent wrapper) {
+    public void on(EventStoreUpdatedEvent wrapper) {
         apply(wrapper.getDomainEvent());
     }
 

@@ -3,11 +3,11 @@ package com.draeger.smartcoffee.adapter.out.postgres;
 import com.draeger.smartcoffee.domain.event.DomainEvent;
 import org.springframework.context.ApplicationEvent;
 
-public class DomainEventPublishedEvent extends ApplicationEvent {
+public class EventStoreUpdatedEvent extends ApplicationEvent {
 
     private final DomainEvent domainEvent;
 
-    public DomainEventPublishedEvent(Object source, DomainEvent domainEvent) {
+    public EventStoreUpdatedEvent(Object source, DomainEvent domainEvent) {
         super(source);
         this.domainEvent = domainEvent;
     }

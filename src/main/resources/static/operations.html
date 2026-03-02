@@ -155,6 +155,28 @@
             <div id="history-result" class="toast"></div>
         </div>
 
+        <!-- Concurrent Write Demo Panel -->
+        <div class="panel">
+            <h2>Concurrent Write Demo</h2>
+
+            <label for="concurrent-machine">Machine</label>
+            <select id="concurrent-machine">
+                <option value="">Loading machines...</option>
+            </select>
+
+            <p style="font-size:0.8rem; color:#888; margin-top:0.75rem; line-height:1.4">
+                Fires two simultaneous <code>produce-coffee</code> requests to the same machine.
+                The DB <code>UNIQUE(machine_id, sequence_number)</code> constraint ensures exactly
+                one write wins; the other gets HTTP 409 (optimistic lock).
+            </p>
+
+            <button class="btn-secondary" onclick="concurrentWriteDemo()">⚡ Fire Concurrent Writes</button>
+            <div id="concurrent-result" style="margin-top:1rem; display:none">
+                <div id="concurrent-a" style="padding:0.5rem; border-radius:6px; margin-bottom:0.5rem; font-size:0.88rem;"></div>
+                <div id="concurrent-b" style="padding:0.5rem; border-radius:6px; font-size:0.88rem;"></div>
+            </div>
+        </div>
+
         <!-- Refill Panel -->
         <div class="panel">
             <h2>Refill Beans</h2>
@@ -180,7 +202,7 @@
             const res = await fetch('/api/machines');
             const machines = await res.json();
 
-            ['machine-select', 'refill-machine', 'history-machine'].forEach(id => {
+            ['machine-select', 'refill-machine', 'history-machine', 'concurrent-machine'].forEach(id => {
                 const sel = document.getElementById(id);
                 sel.innerHTML = '';
                 machines.forEach(m => {
@@ -283,6 +305,42 @@
             } catch (e) {
                 showToast('history-result', '✗ Network error', 'error');
             }
+        }
+
+        async function concurrentWriteDemo() {
+            const machineId = document.getElementById('concurrent-machine').value;
+            if (!machineId) {
+                alert('Please select a machine.');
+                return;
+            }
+
+            const body = JSON.stringify({ coffeeType: 'ESPRESSO', user: 'concurrency-test' });
+            const opts = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body };
+
+            const [r1, r2] = await Promise.all([
+                fetch(`/api/machines/${machineId}/produce-coffee`, opts),
+                fetch(`/api/machines/${machineId}/produce-coffee`, opts)
+            ]);
+
+            const [d1, d2] = await Promise.all([
+                r1.json().catch(() => ({})),
+                r2.json().catch(() => ({}))
+            ]);
+
+            function renderResult(elId, status, data) {
+                const el = document.getElementById(elId);
+                const isOk = status >= 200 && status < 300;
+                el.style.background = isOk ? '#1a4a1a' : '#4a1a1a';
+                el.style.border = `1px solid ${isOk ? '#4caf50' : '#f44336'}`;
+                el.style.color = isOk ? '#a5d6a7' : '#ef9a9a';
+                const detail = isOk ? '✓ 200 OK — write succeeded' : `✗ ${status} — ${data.error || 'conflict'}`;
+                el.textContent = detail;
+            }
+
+            document.getElementById('concurrent-result').style.display = 'block';
+            renderResult('concurrent-a', r1.status, d1);
+            renderResult('concurrent-b', r2.status, d2);
+            loadMachines();
         }
 
         loadMachines();
