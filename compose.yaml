@@ -9,5 +9,13 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  pgweb:
+    image: sosedoff/pgweb
+    ports:
+      - "8081:8081"
+    environment:
+      - DATABASE_URL=postgres://smartcoffee:smartcoffee@postgres:5432/smartcoffee?sslmode=disable
+    depends_on:
+      - postgres
 volumes:
   postgres_data:
