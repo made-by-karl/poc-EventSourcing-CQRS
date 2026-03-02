@@ -4,11 +4,13 @@ import com.draeger.smartcoffee.application.port.in.BeanLevelDto;
 import com.draeger.smartcoffee.application.port.in.CaffeineAlertDto;
 import com.draeger.smartcoffee.application.port.in.CoffeeMachineQueryUseCase;
 import com.draeger.smartcoffee.application.port.in.MachineDto;
+import com.draeger.smartcoffee.application.port.in.MachineStateAtDto;
 import com.draeger.smartcoffee.application.port.in.UserStatsDto;
 import com.draeger.smartcoffee.application.port.out.CoffeeMachineRepository;
 import com.draeger.smartcoffee.application.port.out.EventStore;
 import com.draeger.smartcoffee.domain.event.CoffeeProduced;
 import com.draeger.smartcoffee.domain.event.DomainEvent;
+import com.draeger.smartcoffee.domain.exception.MachineNotFoundException;
 import com.draeger.smartcoffee.domain.model.CoffeeMachine;
 import com.draeger.smartcoffee.domain.model.CoffeeType;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,5 +94,17 @@ public class InMemoryCoffeeMachineQueryService implements CoffeeMachineQueryUseC
             .filter(entry -> entry.getValue() >= 3)
             .map(entry -> new CaffeineAlertDto(entry.getKey(), entry.getValue().intValue()))
             .toList();
+    }
+
+    @Override
+    public MachineStateAtDto getMachineStateAt(UUID machineId, Instant asOf) {
+        List<DomainEvent> events = eventStore.loadEvents(machineId).stream()
+            .filter(e -> !e.getOccurredAt().isAfter(asOf))
+            .toList();
+        if (events.isEmpty()) {
+            throw new MachineNotFoundException(machineId, asOf);
+        }
+        CoffeeMachine machine = CoffeeMachine.reconstitute(events);
+        return new MachineStateAtDto(machineId, machine.getName(), machine.getBeansAvailable(), asOf, events.size());
     }
 }

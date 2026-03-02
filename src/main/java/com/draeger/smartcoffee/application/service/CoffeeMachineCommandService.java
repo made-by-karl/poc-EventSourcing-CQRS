@@ -6,6 +6,7 @@ import com.draeger.smartcoffee.application.command.RegisterMachineCommand;
 import com.draeger.smartcoffee.application.port.in.CoffeeMachineCommandUseCase;
 import com.draeger.smartcoffee.application.port.out.CoffeeMachineRepository;
 import com.draeger.smartcoffee.application.port.out.EventStore;
+import com.draeger.smartcoffee.application.port.out.SnapshotStore;
 import com.draeger.smartcoffee.domain.event.BeansRefilled;
 import com.draeger.smartcoffee.domain.event.CoffeeProduced;
 import com.draeger.smartcoffee.domain.event.MachineRegistered;
@@ -20,10 +21,13 @@ public class CoffeeMachineCommandService implements CoffeeMachineCommandUseCase 
 
     private final EventStore eventStore;
     private final CoffeeMachineRepository repository;
+    private final SnapshotStore snapshotStore;
 
-    public CoffeeMachineCommandService(EventStore eventStore, CoffeeMachineRepository repository) {
+    public CoffeeMachineCommandService(EventStore eventStore, CoffeeMachineRepository repository,
+                                       SnapshotStore snapshotStore) {
         this.eventStore = eventStore;
         this.repository = repository;
+        this.snapshotStore = snapshotStore;
     }
 
     @Override
@@ -33,6 +37,8 @@ public class CoffeeMachineCommandService implements CoffeeMachineCommandUseCase 
             machineId, command.name(), command.initialBeans(), Instant.now()
         );
         eventStore.append(machineId, event);
+        CoffeeMachine machine = repository.load(machineId);
+        snapshotStore.maybeSnapshot(machineId, machine);
         return machineId;
     }
 
@@ -41,6 +47,7 @@ public class CoffeeMachineCommandService implements CoffeeMachineCommandUseCase 
         CoffeeMachine machine = repository.load(command.machineId());
         CoffeeProduced event = machine.handle(command);
         eventStore.append(command.machineId(), event);
+        snapshotStore.maybeSnapshot(command.machineId(), machine);
     }
 
     @Override
@@ -48,5 +55,6 @@ public class CoffeeMachineCommandService implements CoffeeMachineCommandUseCase 
         CoffeeMachine machine = repository.load(command.machineId());
         BeansRefilled event = machine.handle(command);
         eventStore.append(command.machineId(), event);
+        snapshotStore.maybeSnapshot(command.machineId(), machine);
     }
 }

@@ -4,11 +4,17 @@ import com.draeger.smartcoffee.application.port.in.BeanLevelDto;
 import com.draeger.smartcoffee.application.port.in.CaffeineAlertDto;
 import com.draeger.smartcoffee.application.port.in.CoffeeMachineQueryUseCase;
 import com.draeger.smartcoffee.application.port.in.MachineDto;
+import com.draeger.smartcoffee.application.port.in.MachineStateAtDto;
 import com.draeger.smartcoffee.application.port.in.UserStatsDto;
+import com.draeger.smartcoffee.domain.event.DomainEvent;
+import com.draeger.smartcoffee.domain.exception.MachineNotFoundException;
+import com.draeger.smartcoffee.domain.model.CoffeeMachine;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,5 +81,19 @@ public class PostgresQueryService implements CoffeeMachineQueryUseCase {
             (rs, rowNum) -> new CaffeineAlertDto(
                 rs.getString("username"),
                 rs.getInt("cnt")));
+    }
+
+    @Override
+    public MachineStateAtDto getMachineStateAt(UUID machineId, Instant asOf) {
+        List<DomainEvent> events = jdbc.query(
+            "SELECT event_type, payload FROM domain_events " +
+            "WHERE machine_id = ? AND occurred_at <= ? ORDER BY sequence_number",
+            (rs, n) -> EventSerializer.deserialize(rs.getString("payload"), rs.getString("event_type")),
+            machineId, Timestamp.from(asOf));
+        if (events.isEmpty()) {
+            throw new MachineNotFoundException(machineId, asOf);
+        }
+        CoffeeMachine machine = CoffeeMachine.reconstitute(events);
+        return new MachineStateAtDto(machineId, machine.getName(), machine.getBeansAvailable(), asOf, events.size());
     }
 }

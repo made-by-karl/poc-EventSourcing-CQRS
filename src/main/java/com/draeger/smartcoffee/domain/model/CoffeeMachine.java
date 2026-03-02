@@ -25,9 +25,18 @@ public class CoffeeMachine {
 
     public static CoffeeMachine reconstitute(List<DomainEvent> events) {
         CoffeeMachine machine = new CoffeeMachine();
-        for (DomainEvent event : events) {
-            machine.apply(event);
-        }
+
+        machine.applyEvents(events);
+        return machine;
+    }
+
+    public static CoffeeMachine fromSnapshot(UUID id, String name, int beansAvailable, List<DomainEvent> deltaEvents) {
+        CoffeeMachine machine = new CoffeeMachine();
+        machine.id = id;
+        machine.name = name;
+        machine.beansAvailable = beansAvailable;
+
+        machine.applyEvents(deltaEvents);
         return machine;
     }
 
@@ -61,6 +70,12 @@ public class CoffeeMachine {
         );
         apply(event);
         return event;
+    }
+
+    private void applyEvents(List<DomainEvent> deltaEvents) {
+        for (DomainEvent e : deltaEvents) {
+            apply(e);
+        }
     }
 
     private void apply(DomainEvent event) {

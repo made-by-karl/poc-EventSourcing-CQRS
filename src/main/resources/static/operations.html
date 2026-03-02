@@ -139,6 +139,22 @@
             <div id="dispense-toast" class="toast"></div>
         </div>
 
+        <!-- Time Travel Panel -->
+        <div class="panel">
+            <h2>Time Travel</h2>
+
+            <label for="history-machine">Machine</label>
+            <select id="history-machine">
+                <option value="">Loading machines...</option>
+            </select>
+
+            <label for="history-timestamp">Point in Time (ISO-8601)</label>
+            <input type="text" id="history-timestamp" placeholder="e.g. 2025-03-01T14:00:00Z">
+
+            <button class="btn-secondary" onclick="timeTravelQuery()">🕒 Query State</button>
+            <div id="history-result" class="toast"></div>
+        </div>
+
         <!-- Refill Panel -->
         <div class="panel">
             <h2>Refill Beans</h2>
@@ -164,7 +180,7 @@
             const res = await fetch('/api/machines');
             const machines = await res.json();
 
-            ['machine-select', 'refill-machine'].forEach(id => {
+            ['machine-select', 'refill-machine', 'history-machine'].forEach(id => {
                 const sel = document.getElementById(id);
                 sel.innerHTML = '';
                 machines.forEach(m => {
@@ -242,6 +258,30 @@
                 }
             } catch (e) {
                 showToast('refill-toast', '✗ Network error', 'error');
+            }
+        }
+
+        async function timeTravelQuery() {
+            const machineId = document.getElementById('history-machine').value;
+            const timestamp = document.getElementById('history-timestamp').value.trim();
+
+            if (!machineId || !timestamp) {
+                showToast('history-result', 'Please select a machine and enter a timestamp.', 'error');
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/machines/${machineId}/history?at=${encodeURIComponent(timestamp)}`);
+                const data = await res.json();
+
+                if (res.ok) {
+                    const msg = `${data.name}: ${data.beansAvailable} beans @ ${data.asOf} (${data.eventsReplayed} events replayed)`;
+                    showToast('history-result', msg, 'success');
+                } else {
+                    showToast('history-result', `✗ ${data.error}`, 'error');
+                }
+            } catch (e) {
+                showToast('history-result', '✗ Network error', 'error');
             }
         }
 
