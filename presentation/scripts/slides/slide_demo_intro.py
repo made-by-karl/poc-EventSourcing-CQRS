@@ -11,7 +11,7 @@ def add_slide(prs):
     # Context blurb
     rect(slide, 0.5, 1.05, 12.3, 0.88, fill=PANEL, line=BORDER)
     txt(slide,
-        "Three machines in an operating theatre environment. "
+        "Three machines in a hospital operating room. "
         "Every dispensed cup, every refill, every state change — immutably recorded.",
         0.75, 1.12, 11.8, 0.74,
         sz=15, col=TEXT, wrap=True)

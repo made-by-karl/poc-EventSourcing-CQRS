@@ -33,11 +33,16 @@ def add_slide(prs):
         txt(slide, etype, l + 0.1, 2.55, 2.7, 0.45, sz=14, col=ACCENT, bold=True)
         txt(slide, detail, l + 0.1, 3.02, 2.7, 0.95, sz=12, col=TEXT)
 
+    # Arrow label
+    txt(slide, "events  →  fold  →  current state",
+        0, 4.4, SW, 0.68,
+        sz=24, col=ACCENT, bold=True, align=PP_ALIGN.CENTER)
+        
     # Bean calculation
-    rect(slide, 1.5, 4.45, 10.3, 0.78, fill=PANEL, line=BORDER)
+    rect(slide, 1.5, 5.0, 10.3, 0.78, fill=PANEL, line=BORDER)
     txt(slide,
         "beans = 60 (registered) − 10 (espresso) + 20 (refill) − 5 (americano) = 65",
-        1.7, 4.52, 9.9, 0.62,
+        1.7, 5.07, 9.9, 0.62,
         sz=15, col=TEXT, align=PP_ALIGN.CENTER)
 
     footer(slide, "Sequence numbers are monotonic and immutable.")

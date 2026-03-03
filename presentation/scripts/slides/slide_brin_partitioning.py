@@ -41,9 +41,7 @@ def add_slide(prs):
     archive_text = (
         "DETACH PARTITION — removes from queries, keeps data accessible "
         "if you need to rebuild.\n"
-        "Archive to cold storage (S3, Parquet) before detaching.\n"
-        "Only DROP when legally required (GDPR) or after confirming full "
-        "snapshot coverage."
+        "Archive to cold storage (S3, Parquet) before detaching."
     )
     txt(slide, archive_text, 0.65, 4.65, 12.0, 1.8, sz=13, col=TEXT)
 
@@ -57,10 +55,5 @@ def add_slide(prs):
           "page splits), but BRIN is ~100× smaller in index footprint. "
           "For partitioning: partition pruning skips entire months at query time. "
           "Cold partitions are still fully queryable — they're just skipped when "
-          "the WHERE clause doesn't need them. "
-          "Key concern: dropping a partition loses the ability to rebuild projections "
-          "for that time range, and living aggregates with events in that partition "
-          "can't be replayed. Safest approach: snapshot all aggregates past the "
-          "partition boundary, archive to cold storage, DETACH (not DROP). "
-          "Most teams never actually DROP — they detach and archive.")
+          "the WHERE clause doesn't need them.")
     return slide

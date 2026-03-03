@@ -28,7 +28,7 @@ def add_slide(prs):
         sz=16, bold=True, col=SUCCESS)
     es_items = [
         "No row locks — append to end",
-        "Different aggregates = different rows",
+        "Different events = different rows",
         "Sequential I/O (append to end of table)",
         "No dead tuples → minimal VACUUM",
     ]

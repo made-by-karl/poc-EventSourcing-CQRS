@@ -33,7 +33,6 @@ from slides import slide_shift
 from slides import slide_what_is_event
 from slides import slide_aggregate
 from slides import slide_event_stream
-from slides import slide_reconstitute
 from slides import slide_domain_events_table
 from slides import slide_demo_intro
 from slides import slide_demo_event_stored
@@ -41,7 +40,6 @@ from slides import slide_demo_time_travel
 from slides import slide_demo_concurrent
 from slides import slide_divider_cqrs
 from slides import slide_rw_mismatch
-from slides import slide_cqrs_two_models
 from slides import slide_projections
 from slides import slide_write_read_loop
 from slides import slide_demo_caffeine
@@ -53,7 +51,6 @@ from slides import slide_brin_partitioning
 from slides import slide_partitions
 from slides import slide_scaling_writes
 from slides import slide_scaling_reads
-from slides import slide_purpose_built_reads
 from slides import slide_async_projections
 from slides import slide_costs
 from slides import slide_when_to_use
@@ -64,37 +61,39 @@ from slides import slide_thankyou
 SLIDE_MODULES = [
     slide_title,
     slide_product,
+    # Event Sourcing
     slide_divider_es,
     slide_scenario,
-    slide_medical,
     slide_traditional,
     slide_lost,
+    slide_medical,
     slide_shift,
     slide_what_is_event,
     slide_aggregate,
     slide_event_stream,
-    slide_reconstitute,
     slide_domain_events_table,
     slide_demo_intro,
     slide_demo_event_stored,
     slide_demo_time_travel,
     slide_demo_concurrent,
+    # CQRS
     slide_divider_cqrs,
     slide_rw_mismatch,
-    slide_cqrs_two_models,
     slide_projections,
     slide_write_read_loop,
+    slide_async_projections,
     slide_demo_caffeine,
     slide_demo_rebuild,
+    # Performance ES
     slide_divider_perf,
-    slide_snapshotting,
     slide_append_only_writes,
     slide_brin_partitioning,
-    slide_purpose_built_reads,
-    slide_async_projections,
+    slide_snapshotting,
     slide_partitions,
+    # Performance CQRS
     slide_scaling_writes,
     slide_scaling_reads,
+    # Closing
     slide_costs,
     slide_when_to_use,
     slide_getting_started,

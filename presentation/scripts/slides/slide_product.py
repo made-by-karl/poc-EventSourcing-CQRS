@@ -27,6 +27,6 @@ def add_slide(prs):
 
     notes(slide,
           "Meet the Dräger SmartCoffee — our demo domain. "
-          "A coffee machine in an operating theatre. "
+          "A coffee machine in a hospital operating room. "
           "Because yes, coffee saves lives.")
     return slide

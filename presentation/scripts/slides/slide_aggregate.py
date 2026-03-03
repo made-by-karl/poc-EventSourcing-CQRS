@@ -37,7 +37,7 @@ def add_slide(prs):
         sz=15, bold=True, col=ACCENT)
     txt(slide,
         "Fields:   id  \u00b7  name  \u00b7  beansAvailable\n"
-        "Invariant:   0 \u2264 beansAvailable \u2264 MAX_CAPACITY (60)\n"
+        "Invariant:   0 \u2264 beansAvailable \u2264 MAX_CAPACITY (100)\n"
         "Violation \u2192 InsufficientBeansException  (no event produced)",
         1.7, 5.08, 9.9, 1.0,
         sz=13, col=TEXT, fn=MONO)

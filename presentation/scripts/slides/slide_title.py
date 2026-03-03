@@ -32,7 +32,7 @@ def add_slide(prs):
 
     notes(slide,
           "Welcome everyone. I'm Karl. Today we have 45 minutes to explore "
-          "Event Sourcing and CQRS — not just the mechanics, but the *why*. "
-          "We'll use a running demo app that models coffee machines in an "
-          "operating theatre. Questions at the end.")
+          "Event Sourcing and Command Query Responsibility Segregation. "
+          "We'll use a running demo app that models coffee machines in a "
+          "hospital operating room.")
     return slide

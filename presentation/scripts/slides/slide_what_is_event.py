@@ -11,9 +11,10 @@ def add_slide(prs):
     props = [
         ("Past tense name",
          "CoffeeProduced, BeansRefilled,\nMachineRegistered\n\n"
-         "Naming signals immutability.\n\n"
          "Takes place in one aggregate.\n\n"
-         "Final result of a transaction."),
+         "Final result of a transaction.\n\n"
+         "Naming signals immutability."
+         ),
         ("Timestamped",
          "When it happened, to the\nmillisecond."),
         ("Carries context",
@@ -26,11 +27,7 @@ def add_slide(prs):
         card(slide, l, 1.05, 3.0, 4.35, title, body, tsz=15, bsz=12)
 
     # Command vs Event distinction
-    rect(slide, 2.0, 5.62, 9.3, 0.88, fill=BORDER, line=ACCENT)
-    txt(slide,
-        '"PlaceOrder" is a command.   "OrderPlaced" is an event.   Past tense signals immutability.',
-        2.15, 5.68, 9.0, 0.76,
-        sz=13, col=TEXT, align=PP_ALIGN.CENTER)
+    footer(slide, '"ProduceCoffee" is a command.   "CoffeeProduced" is an event.')
 
     notes(slide,
           "Naming matters. Past tense is a design signal — it tells every reader "

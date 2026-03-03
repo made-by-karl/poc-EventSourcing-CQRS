@@ -29,6 +29,8 @@ def add_slide(prs):
         txt(slide, body,  1.38, y + 0.42, 11.2, 0.34,
             sz=12, col=MUTED)
 
+    footer(slide, "Queries read from projections.")
+
     notes(slide,
           "Steps 1–4 are the write side. Steps 5–6 are the read side. "
           "They're connected by a Spring application event in the demo, "

@@ -6,7 +6,7 @@ from common import *
 
 def add_slide(prs):
     slide = new_slide(prs)
-    hdr(slide, "Performance: Don't replay 10,000 events every time")
+    hdr(slide, "Don't replay 10,000 events every time")
 
     # Without snapshot
     rect(slide, 0.4, 1.05, 5.8, 2.25, fill=PANEL, line=DANGER, lw=Pt(2))

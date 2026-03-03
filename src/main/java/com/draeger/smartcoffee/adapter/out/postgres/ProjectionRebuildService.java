@@ -29,8 +29,17 @@ public class ProjectionRebuildService {
 
     @Transactional
     public RebuildResultDto rebuildAll() {
-        long start = System.currentTimeMillis();
+        log.info("Starting projection rebuild...");
         jdbc.execute("TRUNCATE projection_machine_state, projection_user_stats, projection_double_espresso_log");
+
+        try {
+            log.info("Waiting 5 seconds for the live demo...");
+            Thread.sleep(5_000);
+        } catch (InterruptedException e) {
+            // no-op
+        }
+
+        long start = System.currentTimeMillis();
         List<DomainEvent> events = eventStore.loadAllEvents();
         events.forEach(projectionUpdater::apply);
         long elapsed = System.currentTimeMillis() - start;

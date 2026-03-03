@@ -28,8 +28,7 @@ def add_slide(prs):
     steps = [
         "1.  Load all events for machine",
         "2.  Filter: occurred_at ≤ timestamp",
-        "3.  Reconstitute aggregate",
-        "     from filtered list",
+        "3.  Reconstitute aggregate from filtered list",
         "4.  Return state snapshot",
     ]
     for i, step in enumerate(steps):

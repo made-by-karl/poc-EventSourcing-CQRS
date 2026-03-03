@@ -11,18 +11,19 @@ def add_slide(prs):
     # Large contrast panel
     rect(slide, 1.2, 1.2, 10.9, 3.6, fill=PANEL, line=BORDER, lw=Pt(2))
 
-    # Row 1 — muted / struck-through state
-    txt(slide, "beans_available = 45",
-        1.7, 1.55, 9.9, 0.9,
-        sz=30, col=MUTED, italic=True, align=PP_ALIGN.CENTER)
-    # Strikethrough overlay line
-    rect(slide, 2.5, 2.08, 8.3, 0.07, fill=MUTED)
-
-    # Row 2 — gold event fact
+    # Row 1 — gold event fact
     txt(slide,
         "CoffeeProduced  —  DOUBLE_ESPRESSO  —  Dr. Smith  —  09:14:32",
-        1.7, 2.42, 9.9, 1.1,
+        1.7, 1.55, 9.9, 1.1,
         sz=23, col=ACCENT, bold=True, align=PP_ALIGN.CENTER)
+
+    # Strikethrough overlay line
+    rect(slide, 2.5, 2.42, 8.3, 0.07, fill=MUTED)
+
+    # Row 2 — new property value
+    txt(slide, "beans_available = 45",
+        1.7, 2.67, 9.9, 0.9,
+        sz=30, col=MUTED, italic=True, align=PP_ALIGN.CENTER)
 
     # Sub-label
     rect(slide, 3.5, 3.68, 6.3, 0.08, fill=ACCENT)
@@ -38,5 +39,6 @@ def add_slide(prs):
     notes(slide,
           "Everything else in this talk is elaborating "
           "on these two sentences. State is ephemeral. Facts are permanent. "
+          "ES is making history part of your application domain. "
           "If you remember one thing from today, it's this slide.")
     return slide

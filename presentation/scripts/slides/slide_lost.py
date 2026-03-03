@@ -18,9 +18,9 @@ def add_slide(prs):
         ("Temporal blindness",
          "'What did the system look like at 9 am?' is unanswerable "
          "from a current-state database."),
-        ("One model for everything",
-         "The schema is optimised for neither fast writes nor "
-         "complex dashboard queries."),
+        ("No intent",
+         "Beans dropped from 60 to 40 — was that two espressos "
+         "or one double? The current row can't tell you."),
     ]
     positions = [(0.4, 1.05), (6.95, 1.05), (0.4, 3.85), (6.95, 3.85)]
     for (l, t), (title, body) in zip(positions, cards_data):
