@@ -54,5 +54,5 @@ def add_slide(prs):
           "Bean levels: point lookup by UUID. User stats: pre-aggregated counts, "
           "no GROUP BY at query time. Caffeine alerts: index-only scan on a time window. "
           "Compare with CRUD's normalised schema requiring JOINs across 3 tables. "
-          "Projections aren't a luxury — they're why the read side is fast.")
+          "Projections are the reason why the read side is fast.")
     return slide

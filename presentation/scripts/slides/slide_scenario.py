@@ -22,12 +22,12 @@ def add_slide(prs):
 
     # Footer callout
     rect(slide, 1.5, 5.75, 10.3, 0.78, fill=BORDER, line=ACCENT, lw=Pt(2))
-    txt(slide, "With a traditional database, you can't answer these.",
+    txt(slide, "With a traditional approach, you can't answer these.",
         1.65, 5.8, 10.0, 0.68,
         sz=19, col=DANGER, bold=True, align=PP_ALIGN.CENTER)
 
     notes(slide,
-          "We've all been in a production incident where the data "
-          "has been overwritten and the audit trail is missing. "
-          "This is the problem we're solving today.")
+          "Let's start with a simple scenario. It's Monday morning, the OR Machine 1 is empty and we need someone to blame."
+          "We have some questions about the machine's usage and refilling history, but with a traditional database, we can't answer these questions."
+          )
     return slide

@@ -15,8 +15,8 @@ def add_slide(prs):
          "Final result of a transaction.\n\n"
          "Naming signals immutability."
          ),
-        ("Timestamped",
-         "When it happened, to the\nmillisecond."),
+        ("Ordered",
+         "Sequence number, \ntimestamped."),
         ("Carries context",
          "Who, what, how much — everything\nneeded to reconstruct state\nfrom scratch."),
         ("Never updated or deleted",

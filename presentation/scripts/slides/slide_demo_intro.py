@@ -39,7 +39,7 @@ def add_slide(prs):
         0.7, 4.5, 11.9, 0.62,
         sz=15, col=ACCENT, align=PP_ALIGN.CENTER)
 
-    footer(slide, "Open http://localhost:8080 now")
+    footer(slide, "Open http://localhost:8080 and http://localhost:8081 now")
     notes(slide,
           "Point the audience to the running app. If you have it open, switch to it now. "
           "Three machines, all pre-seeded via DataInitializer on startup.")

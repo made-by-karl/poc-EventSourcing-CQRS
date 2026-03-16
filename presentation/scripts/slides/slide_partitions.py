@@ -6,7 +6,7 @@ from common import *
 
 def add_slide(prs):
     slide = new_slide(prs)
-    hdr(slide, "Scale-out is natural — aggregates don't share state")
+    hdr(slide, "Horizontal scale-out — aggregates don't share state")
 
     # Timeline lanes
     lane_data = [

@@ -26,7 +26,6 @@ from slides import slide_title
 from slides import slide_product
 from slides import slide_scenario
 from slides import slide_divider_es
-from slides import slide_medical
 from slides import slide_traditional
 from slides import slide_lost
 from slides import slide_shift
@@ -40,6 +39,7 @@ from slides import slide_demo_time_travel
 from slides import slide_demo_concurrent
 from slides import slide_divider_cqrs
 from slides import slide_rw_mismatch
+from slides import slide_cqrs_two_models
 from slides import slide_projections
 from slides import slide_write_read_loop
 from slides import slide_demo_caffeine
@@ -51,7 +51,6 @@ from slides import slide_brin_partitioning
 from slides import slide_partitions
 from slides import slide_scaling_writes
 from slides import slide_scaling_reads
-from slides import slide_async_projections
 from slides import slide_costs
 from slides import slide_when_to_use
 from slides import slide_getting_started
@@ -66,7 +65,6 @@ SLIDE_MODULES = [
     slide_scenario,
     slide_traditional,
     slide_lost,
-    slide_medical,
     slide_shift,
     slide_what_is_event,
     slide_aggregate,
@@ -79,9 +77,9 @@ SLIDE_MODULES = [
     # CQRS
     slide_divider_cqrs,
     slide_rw_mismatch,
+    slide_cqrs_two_models,
     slide_projections,
     slide_write_read_loop,
-    slide_async_projections,
     slide_demo_caffeine,
     slide_demo_rebuild,
     # Performance ES

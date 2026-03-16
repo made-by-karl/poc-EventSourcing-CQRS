@@ -27,8 +27,8 @@ def add_slide(prs):
         card(slide, l, t, 6.4, 2.55, title, body, tsz=17, bsz=13)
 
     notes(slide,
-          "Teams fight these symptoms constantly: soft deletes, created_at/updated_at, "
+          "You can mitigate some problems with: soft deletes, created_at/updated_at, "
           "separate audit_log tables. Each is a workaround for the same root cause: "
-          "the data model discards history. "
-          "Event Sourcing doesn't bolt on audit — audit IS the primary model.")
+          "the data model discards history."
+          )
     return slide

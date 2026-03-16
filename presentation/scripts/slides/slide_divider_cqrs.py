@@ -25,6 +25,6 @@ def add_slide(prs):
     notes(slide,
           "That was the 'Event Sourcing' section. We saw how all changes to our coffee machines are recorded as immutable events. "
           "Event sourcing gives us a lot of benefits — audit log, time travel, replay, and more. "
-          "But we lose the ability to easily query the current state of our machines."
+          "But we lose the ability to easily query the current state of our machines. "
           "So let's move on to 'CQRS' — Command Query Responsibility Segregation.")
     return slide

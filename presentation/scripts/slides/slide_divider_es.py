@@ -22,4 +22,9 @@ def add_slide(prs):
     txt(slide, "Store what happened, not what is.", 0, 4.3, SW, 0.7,
         sz=20, col=TEXT, italic=True, align=PP_ALIGN.CENTER)
 
+    notes(slide,
+          "Let's start with the first part of the presentation — Event Sourcing. "
+          "Event sourcing is a way of modeling your data where you store facts that happened. "
+          "Instead of just storing the current state of your data, you store the entire history of changes. "
+          "This gives you a lot of benefits, but also some trade-offs. Let's dive in.")
     return slide

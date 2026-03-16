@@ -34,16 +34,6 @@ def add_slide(prs):
         txt(slide, f"  •  {item}", 7.38, 1.72 + i * 0.52, 5.3, 0.45,
             sz=14, col=TEXT)
 
-    # ── Bottom panel: archiving safely (ACCENT border) ─────────────────────
-    rect(slide, 0.4, 4.1, 12.53, 2.5, fill=PANEL, line=ACCENT, lw=Pt(2))
-    txt(slide, "Archiving safely", 0.65, 4.2, 12.0, 0.4,
-        sz=15, bold=True, col=ACCENT)
-    archive_text = (
-        "DETACH PARTITION — removes from queries, keeps data accessible "
-        "if you need to rebuild.\n"
-        "Archive to cold storage (S3, Parquet) before detaching."
-    )
-    txt(slide, archive_text, 0.65, 4.65, 12.0, 1.8, sz=13, col=TEXT)
 
     footer(slide, "Append-only tables are the best case for PostgreSQL storage.")
 

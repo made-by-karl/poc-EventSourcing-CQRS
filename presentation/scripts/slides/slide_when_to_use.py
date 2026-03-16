@@ -28,7 +28,7 @@ def add_slide(prs):
         sz=17, bold=True, col=DANGER)
     bad = [
         "Simple CRUD — user profiles,\nsettings, content management",
-        "Team has no event-driven\nexperience and timeline is tight",
+        "Evolving domain: frequent shifts in aggregates and business rules make event schemas unstable",
         "Strong consistency required\nacross aggregates in one transaction",
     ]
     for i, item in enumerate(bad):
