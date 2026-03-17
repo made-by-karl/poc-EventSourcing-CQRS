@@ -71,12 +71,11 @@ def add_slide(prs):
     footer(slide, "Append-only is the best case for databases — optimized for both reads and writes.")
 
     notes(slide,
-          "Compare CRUD row-level locks with ES sequential INSERTs. "
-          "Different machines never touch the same rows \u2014 zero cross-aggregate contention. "
-          "Same-machine races caught by UNIQUE constraint (optimistic lock: retry, don\u2019t block). "
-          "No UPDATEs also means no dead tuples, so autovacuum is nearly free.\n\n"
-          "BRIN works because append-only tables have perfect physical-to-logical "
-          "correlation \u2014 occurred_at increases monotonically, new rows land at the "
+          "ES offers one structural advantage over traditional approaches: "
+          "New entries are always appended to the end of the table, so the physical order on disk matches the logical order of events. "
+          "With that come several benefits that we don't get with CRUD's UPDATE-in-place model.\n\n"
+          "No UPDATEs means no dead tuples, so autovacuum is nearly free.\n\n"
+          "BRIN works because occurred_at increases monotonically, new rows land at the "
           "end of the table, so block ranges map directly to time ranges. B-tree "
           "inserts for monotonic keys always go to the rightmost leaf, but BRIN is "
           "~100\u00d7 smaller in index footprint.\n\n"

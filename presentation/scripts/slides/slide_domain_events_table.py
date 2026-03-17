@@ -28,6 +28,7 @@ def add_slide(prs):
         1.7, 5.8, 9.9, 0.75,
         sz=16, bold=True, col=ACCENT, align=PP_ALIGN.CENTER)
 
+    footer(slide, "All events from all types of aggregate go into this table. ")
     notes(slide,
           "This is the entire write model. Everything else — projections, snapshots — "
           "is derived from these rows. "

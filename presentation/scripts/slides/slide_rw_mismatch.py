@@ -33,8 +33,8 @@ def add_slide(prs):
     read_needs = [
         "Flat, denormalised struct",
         "Joins & aggregations pre-computed",
-        "Fast dashboard & report queries",
         "Eventually consistent — staleness is acceptable",
+        "Fast dashboard & report queries",
     ]
     for i, item in enumerate(read_needs):
         txt(slide, f"  \u2713  {item}", 7.12, 1.75 + i * 0.68, 5.57, 0.58,
@@ -50,7 +50,8 @@ def add_slide(prs):
         sz=15, col=DANGER, align=PP_ALIGN.CENTER)
 
     notes(slide,
+          "CQRS comes from the insight that the read and write sides have fundamentally different needs. "
           "We can't maximize read performance while maintaining write integrity. "
           "They pull in opposite directions. "
-          "CQRS is just the name we give to accepting that and using two separate models.")
+          "CQRS solves this by giving them separate models, so each can be optimized for its own needs.")
     return slide

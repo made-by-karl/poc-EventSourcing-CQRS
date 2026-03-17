@@ -42,12 +42,12 @@ from slides import slide_rw_mismatch
 from slides import slide_cqrs_two_models
 from slides import slide_projections
 from slides import slide_write_read_loop
+from slides import slide_demo_projections_intro
 from slides import slide_demo_caffeine
 from slides import slide_demo_rebuild
 from slides import slide_divider_perf
 from slides import slide_snapshotting
 from slides import slide_append_only
-from slides import slide_partitions
 from slides import slide_scaling_writes
 from slides import slide_scaling_reads
 from slides import slide_costs
@@ -79,13 +79,13 @@ SLIDE_MODULES = [
     slide_cqrs_two_models,
     slide_projections,
     slide_write_read_loop,
+    slide_demo_projections_intro,
     slide_demo_caffeine,
     slide_demo_rebuild,
     # Performance ES
     slide_divider_perf,
     slide_append_only,
     slide_snapshotting,
-    slide_partitions,
     # Performance CQRS
     slide_scaling_writes,
     slide_scaling_reads,

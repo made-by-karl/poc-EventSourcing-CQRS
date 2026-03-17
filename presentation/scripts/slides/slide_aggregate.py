@@ -6,7 +6,7 @@ from common import *
 
 def add_slide(prs):
     slide = new_slide(prs)
-    hdr(slide, "The Aggregate \u2014 Transactional Boundary")
+    hdr(slide, "The Aggregate \u2014 Consistency Boundary")
 
     # Concrete example callout
     rect(slide, 0.4, 1.05, 10.3, 1.65, fill=PANEL, line=ACCENT, lw=Pt(2))
@@ -46,5 +46,5 @@ def add_slide(prs):
 
     notes(slide,
           "An aggregate is a DDD concept: a cluster of objects treated as a unit "
-          "for data changes. In our codebase, CoffeeMachine is the aggregate root.")
+          "for consistent data changes. In our codebase, CoffeeMachine is the aggregate root.")
     return slide

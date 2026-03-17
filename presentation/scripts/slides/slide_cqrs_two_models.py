@@ -55,6 +55,7 @@ def add_slide(prs):
         txt(slide, prop, read_cx - 1.5, 4.7 + i * 0.45, 3.0, 0.4,
             sz=14, col=TEXT, align=PP_ALIGN.CENTER)
 
+    footer(slide, "Projecting into the read model is not part of the write transaction.")
     notes(slide,
           "CQS (the principle) says: a method either changes state OR returns data, never both. "
           "CQRS lifts that to the architectural level — separate models for writes and reads. "

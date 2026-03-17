@@ -6,7 +6,7 @@ from common import *
 
 def add_slide(prs):
     slide = new_slide(prs)
-    hdr(slide, "Each aggregate owns an ordered stream of events")
+    hdr(slide, "Events create a stream of facts", sz=40)
 
     # Lane label
     txt(slide, "OR Machine 1  —  event stream",

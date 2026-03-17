@@ -26,7 +26,7 @@ def add_slide(prs):
         sz=30, bold=True, col=TEXT, align=PP_ALIGN.CENTER)
 
     notes(slide,
-          "Meet the Dräger SmartCoffee — our demo domain. "
-          "A coffee machine in a hospital operating room. "
-          "Because yes, coffee saves lives.")
+          "Meet the Dräger SmartCoffee — our demo domain, because coffee saves lives. "
+          "A coffee machine in a hospital operating room that writes an audit trail of all its operations to ensure patient safety. "
+          "This is a requirement by compliance regulations, but also a great example of an event-sourced system. ")
     return slide

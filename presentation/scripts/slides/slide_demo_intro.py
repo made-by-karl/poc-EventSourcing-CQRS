@@ -39,8 +39,8 @@ def add_slide(prs):
         0.7, 4.5, 11.9, 0.62,
         sz=15, col=ACCENT, align=PP_ALIGN.CENTER)
 
-    footer(slide, "Open http://localhost:8080 and http://localhost:8081 now")
+    footer(slide, "Demo & Code")
     notes(slide,
-          "Point the audience to the running app. If you have it open, switch to it now. "
-          "Three machines, all pre-seeded via DataInitializer on startup.")
+          "This is the setup we'll be using for the demo. "
+          "We'll have a quick look at the code and data, then we'll do some live demos of how we can query and understand the system's history thanks to event sourcing.")
     return slide

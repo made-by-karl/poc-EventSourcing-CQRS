@@ -27,8 +27,7 @@ def add_slide(prs):
         card(slide, l, t, 6.2, 2.55, title, body, tsz=17, bsz=13)
 
     notes(slide,
-          "You can mitigate some problems with: soft deletes, created_at/updated_at, "
-          "separate audit_log tables. Each is a workaround for the same root cause: "
-          "the data model discards history."
+          "You can mitigate some problems with: separate audit_log tables (e.g. Envers), soft deletes, created_at/updated_at. "
+          "But those are band-aids for the underlying issue: history is not part of the data model."
           )
     return slide
