@@ -20,7 +20,7 @@ def add_slide(prs):
          "History is first-class."),
     ]
     for i, (title, body) in enumerate(outcomes):
-        l = 0.5 + i * 4.3
+        l = 0.4 + i * 4.265
         rect(slide, l, 1.05, 4.0, 4.55, fill=PANEL, line=ACCENT, lw=Pt(2))
         txt(slide, title, l + 0.1, 1.18, 3.8, 0.52,
             sz=18, bold=True, col=ACCENT, align=PP_ALIGN.CENTER)

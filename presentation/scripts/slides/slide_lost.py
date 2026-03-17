@@ -22,9 +22,9 @@ def add_slide(prs):
          "Beans dropped from 60 to 40 — was that two espressos "
          "or one double? The current row can't tell you."),
     ]
-    positions = [(0.4, 1.05), (6.95, 1.05), (0.4, 3.85), (6.95, 3.85)]
+    positions = [(0.4, 1.05), (6.73, 1.05), (0.4, 3.85), (6.73, 3.85)]
     for (l, t), (title, body) in zip(positions, cards_data):
-        card(slide, l, t, 6.4, 2.55, title, body, tsz=17, bsz=13)
+        card(slide, l, t, 6.2, 2.55, title, body, tsz=17, bsz=13)
 
     notes(slide,
           "You can mitigate some problems with: soft deletes, created_at/updated_at, "

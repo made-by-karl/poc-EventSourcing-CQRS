@@ -9,8 +9,8 @@ def add_slide(prs):
     hdr(slide, "Write model and read model have opposite shapes")
 
     # Write side
-    rect(slide, 0.4, 1.05, 5.9, 3.9, fill=PANEL, line=BORDER)
-    txt(slide, "Write model — integrity-first", 0.65, 1.15, 5.4, 0.48,
+    rect(slide, 0.4, 1.05, 6.07, 3.9, fill=PANEL, line=BORDER)
+    txt(slide, "Write model — integrity-first", 0.65, 1.15, 5.57, 0.48,
         sz=18, col=ACCENT, bold=True)
     write_needs = [
         "Normalised — no duplicate data",
@@ -19,16 +19,16 @@ def add_slide(prs):
         "Optimised for single-row inserts & updates",
     ]
     for i, item in enumerate(write_needs):
-        txt(slide, f"  \u2713  {item}", 0.65, 1.75 + i * 0.68, 5.4, 0.58,
+        txt(slide, f"  \u2713  {item}", 0.65, 1.75 + i * 0.68, 5.57, 0.58,
             sz=15, col=TEXT)
 
     # vs label
-    txt(slide, "vs", 6.2, 2.7, 0.93, 0.8,
+    txt(slide, "vs", 6.27, 2.7, 0.8, 0.8,
         sz=32, col=MUTED, align=PP_ALIGN.CENTER)
 
     # Read side
-    rect(slide, 7.13, 1.05, 5.9, 3.9, fill=PANEL, line=BORDER)
-    txt(slide, "Read model — data-first", 7.38, 1.15, 5.4, 0.48,
+    rect(slide, 6.87, 1.05, 6.07, 3.9, fill=PANEL, line=BORDER)
+    txt(slide, "Read model — data-first", 7.12, 1.15, 5.57, 0.48,
         sz=18, col=ACCENT, bold=True)
     read_needs = [
         "Flat, denormalised struct",
@@ -37,7 +37,7 @@ def add_slide(prs):
         "Eventually consistent — staleness is acceptable",
     ]
     for i, item in enumerate(read_needs):
-        txt(slide, f"  \u2713  {item}", 7.38, 1.75 + i * 0.68, 5.4, 0.58,
+        txt(slide, f"  \u2713  {item}", 7.12, 1.75 + i * 0.68, 5.57, 0.58,
             sz=15, col=TEXT)
 
     # Conflict callout

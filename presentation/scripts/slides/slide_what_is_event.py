@@ -23,8 +23,8 @@ def add_slide(prs):
          "Append-only. Once written, an event\nis a permanent fact in the ledger."),
     ]
     for i, (title, body) in enumerate(props):
-        l = 0.4 + i * 3.25
-        card(slide, l, 1.05, 3.0, 4.35, title, body, tsz=15, bsz=12)
+        l = 0.4 + i * 3.18
+        card(slide, l, 1.05, 3.04, 4.35, title, body, tsz=15, bsz=12)
 
     # Command vs Event distinction
     footer(slide, '"ProduceCoffee" is a command.   "CoffeeProduced" is an event.')

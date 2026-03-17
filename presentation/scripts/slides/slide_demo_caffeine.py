@@ -9,7 +9,7 @@ def add_slide(prs):
     hdr(slide, "Demo 4 — Real-Time Projection")
 
     # Left panel — alert banner mock
-    rect(slide, 0.4, 1.05, 5.8, 5.3, fill=PANEL, line=BORDER)
+    rect(slide, 0.4, 1.05, 6.07, 5.3, fill=PANEL, line=BORDER)
     txt(slide, "projections.html — Caffeine Alerts",
         0.65, 1.15, 5.3, 0.42, sz=12, col=MUTED)
     # Orange alert banner
@@ -22,9 +22,9 @@ def add_slide(prs):
         0.65, 3.0, 5.3, 0.42, sz=12, col=MUTED, italic=True)
 
     # Right panel — SQL
-    rect(slide, 6.5, 1.05, 6.6, 5.3, fill=PANEL, line=BORDER)
+    rect(slide, 6.87, 1.05, 6.07, 5.3, fill=PANEL, line=BORDER)
     txt(slide, "SQL behind the alert:",
-        6.75, 1.15, 6.1, 0.45, sz=14, bold=True, col=ACCENT)
+        7.12, 1.15, 5.57, 0.45, sz=14, bold=True, col=ACCENT)
     code(slide,
          "SELECT username, COUNT(*) AS cnt\n"
          "FROM   projection_double_espresso_log\n"
@@ -32,7 +32,7 @@ def add_slide(prs):
          "                   - INTERVAL '2 hours'\n"
          "GROUP  BY username\n"
          "HAVING COUNT(*) >= 3;",
-         6.75, 1.72, 6.1, 3.5, sz=13)
+         7.12, 1.72, 5.57, 3.5, sz=13)
 
     footer(slide, "A projection built for exactly one business rule.")
     notes(slide,

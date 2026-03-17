@@ -23,7 +23,7 @@ def add_slide(prs):
         ("Doctors' Lounge", "40 beans"),
     ]
     for i, (name, beans) in enumerate(machines):
-        l = 0.5 + i * 4.3
+        l = 0.4 + i * 4.265
         rect(slide, l, 2.18, 4.0, 2.0, fill=PANEL, line=ACCENT, lw=Pt(2))
         txt(slide, "☕", l + 1.5, 2.27, 1.0, 0.78,
             sz=32, col=ACCENT, align=PP_ALIGN.CENTER)

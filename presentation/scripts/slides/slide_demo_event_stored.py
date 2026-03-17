@@ -9,7 +9,7 @@ def add_slide(prs):
     hdr(slide, "Demo 1 — Commands produce events")
 
     # Left panel — simulated UI
-    rect(slide, 0.4, 1.05, 5.8, 5.3, fill=PANEL, line=BORDER)
+    rect(slide, 0.4, 1.05, 6.07, 5.3, fill=PANEL, line=BORDER)
     txt(slide, "operations.html — Dispense Panel",
         0.65, 1.15, 5.3, 0.42, sz=12, col=MUTED)
     # Simulated form
@@ -38,7 +38,7 @@ def add_slide(prs):
          "    |                 |   initialBeans: 60 }\n"
          " 1  | CoffeeProdu...  | { coffeeType: DOUBLE_ESPRESSO,\n"
          "    |                 |   user: Dr.Smith, ... }",
-         6.5, 1.05, 6.6, 5.3, sz=11)
+         6.87, 1.05, 6.07, 5.3, sz=11)
 
     footer(slide, "Every button click = one row appended. Nothing updated. Nothing deleted.")
     notes(slide,

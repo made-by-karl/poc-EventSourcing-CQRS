@@ -20,17 +20,17 @@ def add_slide(prs):
          3.1, 2.08, 9.5, 0.72, sz=13)
 
     # Result boxes
-    rect(slide, 0.5, 3.85, 5.9, 1.35, fill=PANEL, line=SUCCESS, lw=Pt(2))
+    rect(slide, 0.4, 3.85, 6.07, 1.35, fill=PANEL, line=SUCCESS, lw=Pt(2))
     txt(slide, "✓  200 OK",
-        0.75, 3.95, 5.4, 0.52, sz=20, bold=True, col=SUCCESS)
+        0.65, 3.95, 5.57, 0.52, sz=20, bold=True, col=SUCCESS)
     txt(slide, "Write succeeded — event appended",
-        0.75, 4.52, 5.4, 0.55, sz=14, col=TEXT)
+        0.65, 4.52, 5.57, 0.55, sz=14, col=TEXT)
 
-    rect(slide, 7.13, 3.85, 5.9, 1.35, fill=PANEL, line=DANGER, lw=Pt(2))
+    rect(slide, 6.87, 3.85, 6.07, 1.35, fill=PANEL, line=DANGER, lw=Pt(2))
     txt(slide, "✗  409 Conflict",
-        7.38, 3.95, 5.4, 0.52, sz=20, bold=True, col=DANGER)
+        7.12, 3.95, 5.57, 0.52, sz=20, bold=True, col=DANGER)
     txt(slide, "Concurrent modification at version 5. Retry.",
-        7.38, 4.52, 5.4, 0.55, sz=14, col=TEXT)
+        7.12, 4.52, 5.57, 0.55, sz=14, col=TEXT)
 
     footer(slide,
            "UNIQUE(machine_id, sequence_number) IS the lock. No explicit locking code.")

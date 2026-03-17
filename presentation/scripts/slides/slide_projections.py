@@ -27,7 +27,7 @@ def add_slide(prs):
          "HAVING COUNT(*) >= 3"),
     ]
     for i, (title, sql) in enumerate(projections):
-        l = 0.5 + i * 4.3
+        l = 0.4 + i * 4.265
         rect(slide, l, 1.05, 4.0, 3.3, fill=PANEL, line=BORDER)
         txt(slide, title, l + 0.1, 1.15, 3.8, 0.48,
             sz=17, bold=True, col=ACCENT)

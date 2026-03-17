@@ -23,9 +23,9 @@ def add_slide(prs):
          "That's what pgweb is for in the demo. "
          "In production: dedicated event viewer or Kibana."),
     ]
-    positions = [(0.4, 1.05), (6.95, 1.05), (0.4, 3.85), (6.95, 3.85)]
+    positions = [(0.4, 1.05), (6.73, 1.05), (0.4, 3.85), (6.73, 3.85)]
     for (l, t), (title, body) in zip(positions, costs):
-        card(slide, l, t, 6.4, 2.55, title, body, tsz=16, bsz=12)
+        card(slide, l, t, 6.2, 2.55, title, body, tsz=16, bsz=12)
 
     notes(slide,
           "Be honest about this. ES+CQRS is not a universal solution. "

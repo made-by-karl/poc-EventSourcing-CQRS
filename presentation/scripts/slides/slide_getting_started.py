@@ -26,7 +26,7 @@ def add_slide(prs):
          "For large-scale,\ndistributed systems."),
     ]
     for i, (title, body) in enumerate(tiers):
-        l = 0.5 + i * 4.3
+        l = 0.4 + i * 4.265
         rect(slide, l, 1.05, 4.0, 5.55, fill=PANEL, line=BORDER)
         txt(slide, title, l + 0.1, 1.15, 3.8, 0.52,
             sz=16, bold=True, col=ACCENT)

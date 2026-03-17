@@ -26,7 +26,7 @@ def add_slide(prs):
         ("3  Return",       "Aggregate ready for\ncommand handling"),
     ]
     for i, (title, body) in enumerate(steps):
-        l = 0.5 + i * 4.3
+        l = 0.4 + i * 4.265
         card(slide, l, 3.9, 4.0, 2.3, title, body, tsz=15, bsz=13)
 
     notes(slide,

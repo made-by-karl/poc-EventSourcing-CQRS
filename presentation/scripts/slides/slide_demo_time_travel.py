@@ -9,7 +9,7 @@ def add_slide(prs):
     hdr(slide, "Demo 2 — Temporal Queries")
 
     # Left — query panel
-    rect(slide, 0.4, 1.05, 5.8, 5.3, fill=PANEL, line=BORDER)
+    rect(slide, 0.4, 1.05, 6.07, 5.3, fill=PANEL, line=BORDER)
     txt(slide, "Time Travel Query",
         0.65, 1.15, 5.3, 0.45, sz=15, bold=True, col=ACCENT)
     code(slide,
@@ -22,9 +22,9 @@ def add_slide(prs):
         0.65, 4.15, 5.3, 0.48, sz=12, col=MUTED)
 
     # Right — explanation
-    rect(slide, 6.5, 1.05, 6.6, 5.3, fill=PANEL, line=BORDER)
+    rect(slide, 6.87, 1.05, 6.07, 5.3, fill=PANEL, line=BORDER)
     txt(slide, "How it works:",
-        6.75, 1.15, 6.1, 0.45, sz=15, bold=True, col=ACCENT)
+        7.12, 1.15, 5.57, 0.45, sz=15, bold=True, col=ACCENT)
     steps = [
         "1.  Load all events for machine",
         "2.  Filter: occurred_at ≤ timestamp",
@@ -32,7 +32,7 @@ def add_slide(prs):
         "4.  Return state snapshot",
     ]
     for i, step in enumerate(steps):
-        txt(slide, step, 6.75, 1.78 + i * 0.72, 6.1, 0.65, sz=14, col=TEXT)
+        txt(slide, step, 7.12, 1.78 + i * 0.72, 5.57, 0.65, sz=14, col=TEXT)
 
     # Key insight strip
     rect(slide, 1.0, 6.55, 11.3, 0.5, fill=BORDER, line=ACCENT)

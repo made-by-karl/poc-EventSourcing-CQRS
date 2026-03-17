@@ -9,8 +9,8 @@ def add_slide(prs):
     hdr(slide, "Append-only — no locks, storage optimized by default")
 
     # ── Top-left card: CRUD UPDATE in place (DANGER border) ──────────────────
-    rect(slide, 0.4, 1.05, 5.8, 2.5, fill=PANEL, line=DANGER, lw=Pt(2))
-    txt(slide, "CRUD: UPDATE in place", 0.65, 1.15, 5.3, 0.45,
+    rect(slide, 0.4, 1.05, 6.07, 2.5, fill=PANEL, line=DANGER, lw=Pt(2))
+    txt(slide, "CRUD: UPDATE in place", 0.65, 1.15, 5.57, 0.45,
         sz=16, bold=True, col=DANGER)
     crud_items = [
         "Row locks held until COMMIT",
@@ -18,12 +18,12 @@ def add_slide(prs):
         "Random I/O + dead tuples (VACUUM pressure)",
     ]
     for i, item in enumerate(crud_items):
-        txt(slide, f"  \u2717  {item}", 0.65, 1.72 + i * 0.52, 5.3, 0.45,
+        txt(slide, f"  \u2717  {item}", 0.65, 1.72 + i * 0.52, 5.57, 0.45,
             sz=14, col=TEXT)
 
     # ── Top-right card: ES INSERT only (SUCCESS border) ──────────────────────
-    rect(slide, 7.13, 1.05, 5.8, 2.5, fill=PANEL, line=SUCCESS, lw=Pt(2))
-    txt(slide, "Append-only: INSERT only", 7.38, 1.15, 5.3, 0.45,
+    rect(slide, 6.87, 1.05, 6.07, 2.5, fill=PANEL, line=SUCCESS, lw=Pt(2))
+    txt(slide, "Append-only: INSERT only", 7.12, 1.15, 5.57, 0.45,
         sz=16, bold=True, col=SUCCESS)
     es_items = [
         "No row locks \u2014 append to end",
@@ -31,14 +31,14 @@ def add_slide(prs):
         "Concurrent writes fail fast, never block",
     ]
     for i, item in enumerate(es_items):
-        txt(slide, f"  \u2713  {item}", 7.38, 1.72 + i * 0.52, 5.3, 0.45,
+        txt(slide, f"  \u2713  {item}", 7.12, 1.72 + i * 0.52, 5.57, 0.45,
             sz=14, col=TEXT)
 
     # ── Bottom strip: What append-only unlocks (ACCENT-bordered cards) ───────
     strip_top = 3.85
     card_h = 2.5
-    card_w = 5.97
-    gap = 0.59
+    card_w = 6.07
+    gap = 0.4
     x0 = 0.4
 
     # Card 1: BRIN index
