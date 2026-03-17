@@ -43,12 +43,16 @@ public class PostgresQueryService implements CoffeeMachineQueryUseCase {
     @Override
     public List<BeanLevelDto> getBeanLevels() {
         return jdbc.query(
-            "SELECT machine_id, name, beans_available, cups_produced FROM projection_machine_state ORDER BY name",
-            (rs, rowNum) -> new BeanLevelDto(
-                UUID.fromString(rs.getString("machine_id")),
-                rs.getString("name"),
-                rs.getInt("beans_available"),
-                rs.getInt("cups_produced")));
+            "SELECT machine_id, name, beans_available, cups_produced, last_maintenance FROM projection_machine_state ORDER BY name",
+            (rs, rowNum) -> {
+                Timestamp ts = rs.getTimestamp("last_maintenance");
+                return new BeanLevelDto(
+                    UUID.fromString(rs.getString("machine_id")),
+                    rs.getString("name"),
+                    rs.getInt("beans_available"),
+                    rs.getInt("cups_produced"),
+                    ts != null ? ts.toInstant() : null);
+            });
     }
 
     @Override
@@ -94,6 +98,6 @@ public class PostgresQueryService implements CoffeeMachineQueryUseCase {
             throw new MachineNotFoundException(machineId, asOf);
         }
         CoffeeMachine machine = CoffeeMachine.reconstitute(events);
-        return new MachineStateAtDto(machineId, machine.getName(), machine.getBeansAvailable(), asOf, events.size());
+        return new MachineStateAtDto(machineId, machine.getName(), machine.getBeansAvailable(), machine.getLastMaintenance(), asOf, events.size());
     }
 }

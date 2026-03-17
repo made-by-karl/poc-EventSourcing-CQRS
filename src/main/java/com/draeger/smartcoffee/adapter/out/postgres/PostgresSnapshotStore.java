@@ -67,7 +67,7 @@ public class PostgresSnapshotStore implements SnapshotStore {
         if (maxSeq - snapVersion >= threshold) {
             try {
                 String json = MAPPER.writeValueAsString(
-                    new CoffeeMachinePayload(machine.getName(), machine.getBeansAvailable()));
+                    new CoffeeMachinePayload(machine.getName(), machine.getBeansAvailable(), machine.getLastMaintenance()));
                 save(new SnapshotRecord(machineId, "CoffeeMachine", maxSeq, json));
                 log.info("Snapshot taken for machine {} at version={}", machineId, maxSeq);
             } catch (Exception e) {

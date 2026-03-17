@@ -1,5 +1,6 @@
 package com.draeger.smartcoffee.adapter.in.web;
 
+import com.draeger.smartcoffee.application.command.MaintainMachineCommand;
 import com.draeger.smartcoffee.application.command.ProduceCoffeeCommand;
 import com.draeger.smartcoffee.application.command.RefillBeansCommand;
 import com.draeger.smartcoffee.application.port.in.CoffeeMachineCommandUseCase;
@@ -54,6 +55,13 @@ public class OperationsController {
     public ResponseEntity<?> refillBeans(@PathVariable UUID id,
                                          @RequestBody RefillRequest request) {
         commandService.refillBeans(new RefillBeansCommand(id, request.beansToAdd(), request.user()));
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/maintain")
+    public ResponseEntity<?> maintainMachine(@PathVariable UUID id,
+                                              @RequestBody MaintainRequest request) {
+        commandService.maintainMachine(new MaintainMachineCommand(id, request.user()));
         return ResponseEntity.ok().build();
     }
 }

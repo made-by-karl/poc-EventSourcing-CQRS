@@ -1,10 +1,12 @@
 package com.draeger.smartcoffee.domain.model;
 
+import com.draeger.smartcoffee.application.command.MaintainMachineCommand;
 import com.draeger.smartcoffee.application.command.ProduceCoffeeCommand;
 import com.draeger.smartcoffee.application.command.RefillBeansCommand;
 import com.draeger.smartcoffee.domain.event.BeansRefilled;
 import com.draeger.smartcoffee.domain.event.CoffeeProduced;
 import com.draeger.smartcoffee.domain.event.DomainEvent;
+import com.draeger.smartcoffee.domain.event.MachineMaintained;
 import com.draeger.smartcoffee.domain.event.MachineRegistered;
 import com.draeger.smartcoffee.domain.exception.InsufficientBeansException;
 
@@ -19,6 +21,7 @@ public class CoffeeMachine {
     private UUID id;
     private String name;
     private int beansAvailable;
+    private Instant lastMaintenance;
 
     private CoffeeMachine() {
     }
@@ -30,11 +33,12 @@ public class CoffeeMachine {
         return machine;
     }
 
-    public static CoffeeMachine fromSnapshot(UUID id, String name, int beansAvailable, List<DomainEvent> deltaEvents) {
+    public static CoffeeMachine fromSnapshot(UUID id, String name, int beansAvailable, Instant lastMaintenance, List<DomainEvent> deltaEvents) {
         CoffeeMachine machine = new CoffeeMachine();
         machine.id = id;
         machine.name = name;
         machine.beansAvailable = beansAvailable;
+        machine.lastMaintenance = lastMaintenance;
 
         machine.applyEvents(deltaEvents);
         return machine;
@@ -52,7 +56,6 @@ public class CoffeeMachine {
             command.coffeeType(),
             command.user(),
             beansRequired,
-            beansAvailable - beansRequired,
             Instant.now()
         );
 
@@ -61,13 +64,28 @@ public class CoffeeMachine {
     }
 
     public BeansRefilled handle(RefillBeansCommand command) {
+        int actualAdded = Math.min(command.beansToAdd(), MAX_BEANS_CAPACITY - beansAvailable);
         BeansRefilled event = new BeansRefilled(
             id,
             command.user(),
-            command.beansToAdd(),
-            Math.min(MAX_BEANS_CAPACITY, beansAvailable + command.beansToAdd()),
+            actualAdded,
             Instant.now()
         );
+
+        apply(event);
+        return event;
+    }
+
+    public MachineMaintained handle(MaintainMachineCommand command) {
+        Instant now = Instant.now();
+        MachineMaintained event = new MachineMaintained(
+            id,
+            command.user(),
+            now,
+            0,
+            now
+        );
+
         apply(event);
         return event;
     }
@@ -85,8 +103,12 @@ public class CoffeeMachine {
                 this.name = e.getName();
                 this.beansAvailable = e.getInitialBeans();
             }
-            case CoffeeProduced e -> this.beansAvailable = e.getBeansAvailableAfter();
-            case BeansRefilled e -> this.beansAvailable = e.getBeansAvailableAfter();
+            case CoffeeProduced e -> this.beansAvailable -= e.getBeansConsumed();
+            case BeansRefilled e -> this.beansAvailable += e.getBeansAdded();
+            case MachineMaintained e -> {
+                this.lastMaintenance = e.getMaintainedAt();
+                this.beansAvailable = e.getBeansAfterMaintenance();
+            }
             case null, default -> {
             }
         }
@@ -102,5 +124,9 @@ public class CoffeeMachine {
 
     public int getBeansAvailable() {
         return beansAvailable;
+    }
+
+    public Instant getLastMaintenance() {
+        return lastMaintenance;
     }
 }

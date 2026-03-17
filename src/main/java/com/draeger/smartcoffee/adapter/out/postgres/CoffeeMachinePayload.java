@@ -1,3 +1,5 @@
 package com.draeger.smartcoffee.adapter.out.postgres;
 
-record CoffeeMachinePayload(String name, int beansAvailable) {}
+import java.time.Instant;
+
+record CoffeeMachinePayload(String name, int beansAvailable, Instant lastMaintenance) {}

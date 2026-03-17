@@ -1,5 +1,6 @@
 package com.draeger.smartcoffee.application.service;
 
+import com.draeger.smartcoffee.application.command.MaintainMachineCommand;
 import com.draeger.smartcoffee.application.command.ProduceCoffeeCommand;
 import com.draeger.smartcoffee.application.command.RefillBeansCommand;
 import com.draeger.smartcoffee.application.command.RegisterMachineCommand;
@@ -7,6 +8,7 @@ import com.draeger.smartcoffee.application.port.in.CoffeeMachineCommandUseCase;
 import com.draeger.smartcoffee.application.port.out.CoffeeMachineRepository;
 import com.draeger.smartcoffee.domain.event.BeansRefilled;
 import com.draeger.smartcoffee.domain.event.CoffeeProduced;
+import com.draeger.smartcoffee.domain.event.MachineMaintained;
 import com.draeger.smartcoffee.domain.event.MachineRegistered;
 import com.draeger.smartcoffee.domain.model.CoffeeMachine;
 import org.springframework.stereotype.Service;
@@ -45,6 +47,13 @@ public class CoffeeMachineCommandService implements CoffeeMachineCommandUseCase 
     public void refillBeans(RefillBeansCommand command) {
         CoffeeMachine machine = repository.load(command.machineId());
         BeansRefilled event = machine.handle(command);
+        repository.update(machine, event);
+    }
+
+    @Override
+    public void maintainMachine(MaintainMachineCommand command) {
+        CoffeeMachine machine = repository.load(command.machineId());
+        MachineMaintained event = machine.handle(command);
         repository.update(machine, event);
     }
 }

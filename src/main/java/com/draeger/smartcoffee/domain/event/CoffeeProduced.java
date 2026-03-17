@@ -12,21 +12,18 @@ public class CoffeeProduced extends DomainEvent {
     private final CoffeeType coffeeType;
     private final String user;
     private final int beansConsumed;
-    private final int beansAvailableAfter;
 
     @JsonCreator
     public CoffeeProduced(
-            @JsonProperty("machineId")          UUID machineId,
-            @JsonProperty("coffeeType")         CoffeeType coffeeType,
-            @JsonProperty("user")               String user,
-            @JsonProperty("beansConsumed")      int beansConsumed,
-            @JsonProperty("beansAvailableAfter") int beansAvailableAfter,
-            @JsonProperty("occurredAt")         Instant occurredAt) {
+            @JsonProperty("machineId")     UUID machineId,
+            @JsonProperty("coffeeType")    CoffeeType coffeeType,
+            @JsonProperty("user")          String user,
+            @JsonProperty("beansConsumed") int beansConsumed,
+            @JsonProperty("occurredAt")    Instant occurredAt) {
         super(machineId, occurredAt);
         this.coffeeType = coffeeType;
         this.user = user;
         this.beansConsumed = beansConsumed;
-        this.beansAvailableAfter = beansAvailableAfter;
     }
 
     public CoffeeType getCoffeeType() {
@@ -39,9 +36,5 @@ public class CoffeeProduced extends DomainEvent {
 
     public int getBeansConsumed() {
         return beansConsumed;
-    }
-
-    public int getBeansAvailableAfter() {
-        return beansAvailableAfter;
     }
 }

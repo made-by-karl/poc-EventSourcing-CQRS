@@ -1,5 +1,6 @@
 package com.draeger.smartcoffee.application.port.in;
 
+import com.draeger.smartcoffee.application.command.MaintainMachineCommand;
 import com.draeger.smartcoffee.application.command.ProduceCoffeeCommand;
 import com.draeger.smartcoffee.application.command.RefillBeansCommand;
 import com.draeger.smartcoffee.application.command.RegisterMachineCommand;
@@ -13,4 +14,6 @@ public interface CoffeeMachineCommandUseCase {
     void produceCoffee(ProduceCoffeeCommand command);
 
     void refillBeans(RefillBeansCommand command);
+
+    void maintainMachine(MaintainMachineCommand command);
 }

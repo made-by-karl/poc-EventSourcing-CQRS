@@ -43,7 +43,7 @@ def add_slide(prs):
          "ORDER  BY version DESC\n"
          "LIMIT  1;\n"
          "\n"
-         '-- payload → {"name": "OR Machine 1", "beansAvailable": 45}',
+         '-- payload → {"name": "OR Machine 1", "beansAvailable": 45, "lastMaintenance": ...}',
          1.5, 4.35, 10.3, 2.2, sz=13)
 
     notes(slide,

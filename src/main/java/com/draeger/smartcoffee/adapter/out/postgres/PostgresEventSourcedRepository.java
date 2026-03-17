@@ -63,6 +63,7 @@ public class PostgresEventSourcedRepository implements CoffeeMachineRepository {
                     snap.get().aggregateId(),
                     p.name(),
                     p.beansAvailable(),
+                    p.lastMaintenance(),
                     deltaEvents);
                 log.info("Loaded machine {} from snapshot@v={}, replayed {} delta events",
                     machineId, snap.get().version(), deltaEvents.size());

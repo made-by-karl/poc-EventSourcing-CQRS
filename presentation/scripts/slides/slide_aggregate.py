@@ -14,7 +14,7 @@ def add_slide(prs):
         0.6, 1.12, 5.0, 0.42,
         sz=15, bold=True, col=ACCENT)
     txt(slide,
-        "Fields:   id  \u00b7  name  \u00b7  beansAvailable\n"
+        "Fields:   id  \u00b7  name  \u00b7  beansAvailable  \u00b7  lastMaintenance\n"
         "Invariant:   0 \u2264 beansAvailable \u2264 MAX_CAPACITY (100)\n"
         "Violation \u2192 InsufficientBeansException  (no event produced)",
         0.6, 1.58, 9.9, 1.0,

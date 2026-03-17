@@ -171,6 +171,7 @@
                         <th>Machine</th>
                         <th>Beans</th>
                         <th>Cups</th>
+                        <th>Last Maintenance</th>
                     </tr>
                 </thead>
                 <tbody id="bean-table-body">
@@ -221,13 +222,16 @@
                 const tbody = document.getElementById('bean-table-body');
 
                 if (!data.length) {
-                    tbody.innerHTML = '<tr><td colspan="3" class="empty">No machines registered</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="4" class="empty">No machines registered</td></tr>';
                     return;
                 }
 
                 tbody.innerHTML = data.map(m => {
                     const pct = Math.min(100, Math.round((m.beansAvailable / MAX_BEANS) * 100));
                     const colorClass = pct < 20 ? 'low' : pct < 40 ? 'medium' : '';
+                    const maint = m.lastMaintenance
+                        ? new Date(m.lastMaintenance).toLocaleString()
+                        : '—';
                     return `<tr>
                         <td>${m.name}</td>
                         <td>
@@ -239,6 +243,7 @@
                             </div>
                         </td>
                         <td>${m.cupsProduced}</td>
+                        <td style="font-size:0.8rem;color:#aaa">${maint}</td>
                     </tr>`;
                 }).join('');
             } catch (e) { console.error('Bean levels error', e); }

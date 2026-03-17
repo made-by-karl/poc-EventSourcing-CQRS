@@ -21,7 +21,7 @@ def add_slide(prs):
     rect(slide, 2.5, 2.42, 8.3, 0.07, fill=MUTED)
 
     # Row 2 — new property value
-    txt(slide, "beans_available = 45",
+    txt(slide, "beansConsumed = 20",
         1.7, 2.67, 9.9, 0.9,
         sz=30, col=MUTED, italic=True, align=PP_ALIGN.CENTER)
 

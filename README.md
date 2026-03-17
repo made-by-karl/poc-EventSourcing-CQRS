@@ -3,26 +3,10 @@
 A demo application illustrating **Event Sourcing** and **CQRS** in a medical device context:
 a smart coffee machine in an Operating Room that must document every dispensing event for compliance.
 
-## Architecture
-
-The application follows **Hexagonal Architecture (Ports & Adapters)**:
-
-- **Domain** — `CoffeeMachine` aggregate, `DomainEvent` hierarchy, business rules
-- **Application** — use case interfaces (ports), command/query services
-- **Adapters** — REST controllers (in), in-memory event store (out)
-
-Every state change is stored as an immutable event (`CoffeeProduced`, `BeansRefilled`, …).
-The aggregate is always rebuilt by replaying these events — no database, no mutable state persisted.
-
-```
-Command → load events → reconstitute aggregate → handle → append new event
-Query   → scan event stream → build projection on the fly
-```
-
 ## Requirements
 
 - Java 24
-- No database or Docker required — everything runs in memory
+- Docker (for the database)
 
 ## Starting the application
 
@@ -67,6 +51,30 @@ The query side. Refreshes automatically every 3 seconds.
 | User Statistics | Total cups and breakdown by coffee type per user |
 | Caffeine Alert | Warning banner when a user has had ≥ 3 Double Espressos in the last 2 hours |
 
+### Reset the database for a clean start
+
+To reset the data remove the postgres volume. The application will rebuild the database with initial values.
+
+```bash
+docker compose down -v && docker compose up -d
+```
+
+## Architecture
+
+The application follows **Hexagonal Architecture (Ports & Adapters)**:
+
+- **Domain** — `CoffeeMachine` aggregate, `DomainEvent` hierarchy, business rules
+- **Application** — use case interfaces (ports), command/query services
+- **Adapters** — REST controllers (in), database event store (out)
+
+Every state change is stored as an immutable event (`CoffeeProduced`, `BeansRefilled`, …).
+The aggregate is always rebuilt by replaying these events.
+
+```
+Command → load events → reconstitute aggregate → handle → append new event
+Query   → scan event stream → build projection on the fly
+```
+
 ## REST API
 
 | Method | Path | Description |
@@ -80,12 +88,12 @@ The query side. Refreshes automatically every 3 seconds.
 
 **Produce coffee request body:**
 ```json
-{ "coffeeType": "DOUBLE_ESPRESSO", "user": "mueller" }
+{ "coffeeType": "DOUBLE_ESPRESSO", "user": "smith" }
 ```
 
 **Refill request body:**
 ```json
-{ "beansToAdd": 20, "user": "technik" }
+{ "beansToAdd": 20, "user": "bob" }
 ```
 
 ## Debug mode

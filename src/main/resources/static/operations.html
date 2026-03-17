@@ -23,18 +23,16 @@
         .header a:hover { color: #c8a96e; }
         h1 { font-size: 1.8rem; color: #c8a96e; }
         .layout {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
-            flex-wrap: wrap;
-            max-width: 900px;
+            max-width: 1200px;
         }
         .panel {
             background: #16213e;
             border: 1px solid #0f3460;
             border-radius: 12px;
             padding: 1.5rem;
-            flex: 1;
-            min-width: 300px;
         }
         h2 {
             font-size: 1.1rem;
@@ -115,6 +113,8 @@
     </div>
 
     <div class="layout">
+        <!-- Row 1: Core Operations -->
+
         <!-- Dispense Panel -->
         <div class="panel">
             <h2>Dispense Coffee</h2>
@@ -138,6 +138,43 @@
             <button id="dispense-btn" onclick="dispense()">☕ Dispense Coffee</button>
             <div id="dispense-toast" class="toast"></div>
         </div>
+
+        <!-- Refill Panel -->
+        <div class="panel">
+            <h2>Refill Beans</h2>
+
+            <label for="refill-machine">Machine</label>
+            <select id="refill-machine">
+                <option value="">Loading machines...</option>
+            </select>
+
+            <label for="refill-user">Technician</label>
+            <input type="text" id="refill-user" placeholder="e.g. Bob" value="Bob">
+
+            <label for="beans-amount">Beans to Add</label>
+            <input type="number" id="beans-amount" value="20" min="1" max="200">
+
+            <button class="btn-secondary" onclick="refill()">🫘 Refill Beans</button>
+            <div id="refill-toast" class="toast"></div>
+        </div>
+
+        <!-- Maintenance Panel -->
+        <div class="panel">
+            <h2>Record Maintenance</h2>
+
+            <label for="maintain-machine">Machine</label>
+            <select id="maintain-machine">
+                <option value="">Loading machines...</option>
+            </select>
+
+            <label for="maintain-user">Technician</label>
+            <input type="text" id="maintain-user" placeholder="e.g. Bob" value="Bob">
+
+            <button class="btn-secondary" onclick="maintain()">🔧 Record Maintenance</button>
+            <div id="maintain-toast" class="toast"></div>
+        </div>
+
+        <!-- Row 2: Demo / Advanced Panels -->
 
         <!-- Time Travel Panel -->
         <div class="panel">
@@ -177,25 +214,6 @@
                 <div id="concurrent-b" style="padding:0.5rem; border-radius:6px; font-size:0.88rem;"></div>
             </div>
         </div>
-
-        <!-- Refill Panel -->
-        <div class="panel">
-            <h2>Refill Beans</h2>
-
-            <label for="refill-machine">Machine</label>
-            <select id="refill-machine">
-                <option value="">Loading machines...</option>
-            </select>
-
-            <label for="refill-user">Technician</label>
-            <input type="text" id="refill-user" placeholder="e.g. Bob" value="Bob">
-
-            <label for="beans-amount">Beans to Add</label>
-            <input type="number" id="beans-amount" value="20" min="1" max="200">
-
-            <button class="btn-secondary" onclick="refill()">🫘 Refill Beans</button>
-            <div id="refill-toast" class="toast"></div>
-        </div>
     </div>
 
     <script>
@@ -203,7 +221,7 @@
             const res = await fetch('/api/machines');
             const machines = await res.json();
 
-            ['machine-select', 'refill-machine', 'history-machine', 'concurrent-machine'].forEach(id => {
+            ['machine-select', 'refill-machine', 'maintain-machine', 'history-machine', 'concurrent-machine'].forEach(id => {
                 const sel = document.getElementById(id);
                 sel.innerHTML = '';
                 machines.forEach(m => {
@@ -281,6 +299,33 @@
                 }
             } catch (e) {
                 showToast('refill-toast', '✗ Network error', 'error');
+            }
+        }
+
+        async function maintain() {
+            const machineId = document.getElementById('maintain-machine').value;
+            const user = document.getElementById('maintain-user').value.trim();
+
+            if (!machineId || !user) {
+                showToast('maintain-toast', 'Please select a machine and enter a technician name.', 'error');
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/machines/${machineId}/maintain`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user })
+                });
+
+                if (res.ok) {
+                    showToast('maintain-toast', `✓ Maintenance recorded for ${user}`, 'success');
+                    loadMachines();
+                } else {
+                    showToast('maintain-toast', '✗ Maintenance recording failed', 'error');
+                }
+            } catch (e) {
+                showToast('maintain-toast', '✗ Network error', 'error');
             }
         }
 

@@ -3,6 +3,7 @@ package com.draeger.smartcoffee.adapter.out.postgres;
 import com.draeger.smartcoffee.domain.event.BeansRefilled;
 import com.draeger.smartcoffee.domain.event.CoffeeProduced;
 import com.draeger.smartcoffee.domain.event.DomainEvent;
+import com.draeger.smartcoffee.domain.event.MachineMaintained;
 import com.draeger.smartcoffee.domain.event.MachineRegistered;
 import com.draeger.smartcoffee.domain.model.CoffeeType;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -38,8 +39,8 @@ public class ProjectionUpdater {
                 e.getMachineId(), e.getName(), e.getInitialBeans());
             case CoffeeProduced e -> {
                 jdbc.update(
-                    "UPDATE projection_machine_state SET beans_available = ?, cups_produced = cups_produced + 1 WHERE machine_id = ?",
-                    e.getBeansAvailableAfter(), e.getMachineId());
+                    "UPDATE projection_machine_state SET beans_available = beans_available - ?, cups_produced = cups_produced + 1 WHERE machine_id = ?",
+                    e.getBeansConsumed(), e.getMachineId());
                 jdbc.update(
                     "INSERT INTO projection_user_stats (username, coffee_type, cup_count) VALUES (?, ?, 1) ON CONFLICT (username, coffee_type) DO UPDATE SET cup_count = projection_user_stats.cup_count + 1",
                     e.getUser(), e.getCoffeeType().name());
@@ -50,8 +51,11 @@ public class ProjectionUpdater {
                 }
             }
             case BeansRefilled e -> jdbc.update(
-                "UPDATE projection_machine_state SET beans_available = ? WHERE machine_id = ?",
-                e.getBeansAvailableAfter(), e.getMachineId());
+                "UPDATE projection_machine_state SET beans_available = beans_available + ? WHERE machine_id = ?",
+                e.getBeansAdded(), e.getMachineId());
+            case MachineMaintained e -> jdbc.update(
+                "UPDATE projection_machine_state SET last_maintenance = ?, beans_available = ? WHERE machine_id = ?",
+                Timestamp.from(e.getMaintainedAt()), e.getBeansAfterMaintenance(), e.getMachineId());
             case null, default -> {
             }
         }
