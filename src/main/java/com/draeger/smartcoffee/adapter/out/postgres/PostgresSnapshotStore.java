@@ -56,7 +56,9 @@ public class PostgresSnapshotStore implements SnapshotStore {
     }
 
     @Override
-    public void maybeSnapshot(UUID machineId, CoffeeMachine machine) {
+    public void maybeSnapshot(CoffeeMachine machine) {
+        UUID machineId = machine.getId();
+
         long maxSeq = Optional.ofNullable(jdbc.queryForObject(
             "SELECT MAX(sequence_number) FROM domain_events WHERE machine_id = ?",
             Long.class, machineId

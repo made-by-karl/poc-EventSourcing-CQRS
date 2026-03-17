@@ -7,7 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
 
@@ -19,31 +20,37 @@ public class ProjectionRebuildService {
     private final JdbcTemplate jdbc;
     private final EventStore eventStore;
     private final ProjectionUpdater projectionUpdater;
+    private final TransactionTemplate txTemplate;
 
     public ProjectionRebuildService(JdbcTemplate jdbc, EventStore eventStore,
-                                    ProjectionUpdater projectionUpdater) {
+                                    ProjectionUpdater projectionUpdater,
+                                    PlatformTransactionManager txManager) {
         this.jdbc = jdbc;
         this.eventStore = eventStore;
         this.projectionUpdater = projectionUpdater;
+        this.txTemplate = new TransactionTemplate(txManager);
     }
 
-    @Transactional
     public RebuildResultDto rebuildAll() {
-        log.info("Starting projection rebuild...");
-        jdbc.execute("TRUNCATE projection_machine_state, projection_user_stats, projection_double_espresso_log");
+        log.info("Starting projection rebuild — truncating projections...");
+        txTemplate.executeWithoutResult(status ->
+            jdbc.execute("TRUNCATE projection_machine_state, projection_user_stats, projection_double_espresso_log")
+        );
 
         try {
             log.info("Waiting 5 seconds for the live demo...");
             Thread.sleep(5_000);
         } catch (InterruptedException e) {
-            // no-op
+            Thread.currentThread().interrupt();
         }
 
-        long start = System.currentTimeMillis();
-        List<DomainEvent> events = eventStore.loadAllEvents();
-        events.forEach(projectionUpdater::apply);
-        long elapsed = System.currentTimeMillis() - start;
-        log.info("Projection rebuild: {} events in {}ms", events.size(), elapsed);
-        return new RebuildResultDto(events.size(), elapsed);
+        return txTemplate.execute(status -> {
+            long start = System.currentTimeMillis();
+            List<DomainEvent> events = eventStore.loadAllEvents();
+            events.forEach(projectionUpdater::apply);
+            long elapsed = System.currentTimeMillis() - start;
+            log.info("Projection rebuild: {} events in {}ms", events.size(), elapsed);
+            return new RebuildResultDto(events.size(), elapsed);
+        });
     }
 }

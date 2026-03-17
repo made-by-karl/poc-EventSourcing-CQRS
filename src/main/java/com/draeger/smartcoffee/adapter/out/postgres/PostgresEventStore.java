@@ -28,7 +28,9 @@ public class PostgresEventStore implements EventStore {
 
     @Override
     @Transactional
-    public void append(UUID machineId, DomainEvent event) {
+    public void append(DomainEvent event) {
+        UUID machineId = event.getMachineId();
+
         // SELECT MAX + 1 is the optimistic version number.
         // The UNIQUE (machine_id, sequence_number) constraint is the actual lock:
         // if two writers race for the same aggregate, only one INSERT succeeds;

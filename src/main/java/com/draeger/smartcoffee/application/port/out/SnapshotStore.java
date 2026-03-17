@@ -12,5 +12,5 @@ public interface SnapshotStore {
     void save(SnapshotRecord snapshot);
 
     /** Checks if delta since last snapshot meets the threshold; saves if so. */
-    void maybeSnapshot(UUID machineId, CoffeeMachine machine);
+    void maybeSnapshot(CoffeeMachine machine);
 }

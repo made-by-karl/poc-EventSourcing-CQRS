@@ -5,6 +5,7 @@ import com.draeger.smartcoffee.application.port.out.EventStore;
 import com.draeger.smartcoffee.application.port.out.SnapshotRecord;
 import com.draeger.smartcoffee.application.port.out.SnapshotStore;
 import com.draeger.smartcoffee.domain.event.DomainEvent;
+import com.draeger.smartcoffee.domain.event.MachineRegistered;
 import com.draeger.smartcoffee.domain.model.CoffeeMachine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,13 @@ public class PostgresEventSourcedRepository implements CoffeeMachineRepository {
     }
 
     @Override
+    public CoffeeMachine create(MachineRegistered event) {
+        eventStore.append(event);
+        CoffeeMachine machine = CoffeeMachine.reconstitute(List.of(event));
+        return machine;
+    }
+
+    @Override
     public CoffeeMachine load(UUID machineId) {
         Optional<SnapshotRecord> snap = snapshotStore.findLatest(machineId);
         if (snap.isPresent()) {
@@ -72,5 +80,11 @@ public class PostgresEventSourcedRepository implements CoffeeMachineRepository {
     @Override
     public boolean exists(UUID machineId) {
         return !eventStore.loadEvents(machineId).isEmpty();
+    }
+
+    @Override
+    public void update(CoffeeMachine machine, DomainEvent event) {
+        eventStore.append(event);
+        snapshotStore.maybeSnapshot(machine);
     }
 }

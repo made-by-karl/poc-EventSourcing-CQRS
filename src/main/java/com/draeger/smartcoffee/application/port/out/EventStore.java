@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface EventStore {
 
-    void append(UUID machineId, DomainEvent event);
+    void append(DomainEvent event);
 
     List<DomainEvent> loadEvents(UUID machineId);
 

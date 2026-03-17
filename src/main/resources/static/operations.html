@@ -151,6 +151,7 @@
             <label for="history-timestamp">Point in Time (ISO-8601)</label>
             <input type="text" id="history-timestamp" placeholder="e.g. 2025-03-01T14:00:00Z">
 
+            <button class="btn-secondary" onclick="fiveMinutesBefore()" style="margin-top:0.75rem">⏪ 5 Minutes Before</button>
             <button class="btn-secondary" onclick="timeTravelQuery()">🕒 Query State</button>
             <div id="history-result" class="toast"></div>
         </div>
@@ -281,6 +282,13 @@
             } catch (e) {
                 showToast('refill-toast', '✗ Network error', 'error');
             }
+        }
+
+        function fiveMinutesBefore() {
+            const input = document.getElementById('history-timestamp');
+            const base = input.value.trim() ? new Date(input.value.trim()) : new Date();
+            base.setMinutes(base.getMinutes() - 5);
+            input.value = base.toISOString();
         }
 
         async function timeTravelQuery() {

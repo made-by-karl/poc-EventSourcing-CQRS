@@ -5,8 +5,6 @@ import com.draeger.smartcoffee.application.command.RefillBeansCommand;
 import com.draeger.smartcoffee.application.command.RegisterMachineCommand;
 import com.draeger.smartcoffee.application.port.in.CoffeeMachineCommandUseCase;
 import com.draeger.smartcoffee.application.port.out.CoffeeMachineRepository;
-import com.draeger.smartcoffee.application.port.out.EventStore;
-import com.draeger.smartcoffee.application.port.out.SnapshotStore;
 import com.draeger.smartcoffee.domain.event.BeansRefilled;
 import com.draeger.smartcoffee.domain.event.CoffeeProduced;
 import com.draeger.smartcoffee.domain.event.MachineRegistered;
@@ -19,15 +17,10 @@ import java.util.UUID;
 @Service
 public class CoffeeMachineCommandService implements CoffeeMachineCommandUseCase {
 
-    private final EventStore eventStore;
     private final CoffeeMachineRepository repository;
-    private final SnapshotStore snapshotStore;
 
-    public CoffeeMachineCommandService(EventStore eventStore, CoffeeMachineRepository repository,
-                                       SnapshotStore snapshotStore) {
-        this.eventStore = eventStore;
+    public CoffeeMachineCommandService(CoffeeMachineRepository repository) {
         this.repository = repository;
-        this.snapshotStore = snapshotStore;
     }
 
     @Override
@@ -36,25 +29,22 @@ public class CoffeeMachineCommandService implements CoffeeMachineCommandUseCase 
         MachineRegistered event = new MachineRegistered(
             machineId, command.name(), command.initialBeans(), Instant.now()
         );
-        eventStore.append(machineId, event);
-        CoffeeMachine machine = repository.load(machineId);
-        snapshotStore.maybeSnapshot(machineId, machine);
-        return machineId;
+
+        CoffeeMachine machine = repository.create(event);
+        return machine.getId();
     }
 
     @Override
     public void produceCoffee(ProduceCoffeeCommand command) {
         CoffeeMachine machine = repository.load(command.machineId());
         CoffeeProduced event = machine.handle(command);
-        eventStore.append(command.machineId(), event);
-        snapshotStore.maybeSnapshot(command.machineId(), machine);
+        repository.update(machine, event);
     }
 
     @Override
     public void refillBeans(RefillBeansCommand command) {
         CoffeeMachine machine = repository.load(command.machineId());
         BeansRefilled event = machine.handle(command);
-        eventStore.append(command.machineId(), event);
-        snapshotStore.maybeSnapshot(command.machineId(), machine);
+        repository.update(machine, event);
     }
 }
