@@ -8,51 +8,39 @@ def add_slide(prs):
     slide = new_slide(prs)
     hdr(slide, "Scaling the read side")
 
-    # ── Left card: Scale out projections (SUCCESS border) ────────────────────
-    rect(slide, 0.4, 1.05, 6.0, 3.0, fill=PANEL, line=SUCCESS, lw=Pt(2))
-    txt(slide, "Scale out projections", 0.65, 1.15, 5.5, 0.45,
-        sz=16, bold=True, col=SUCCESS)
-    scale_items = [
-        "Read replicas (PostgreSQL streaming replication)",
-        "Independent projection instances consuming events",
-        "Each projection scales separately from commands",
+    # ── Three stacked tiers ──────────────────────────────────────────────────
+    tiers = [
+        ("Tier 1",
+         "Read replicas",
+         "PostgreSQL streaming replication for near-zero-lag copies.\n"
+         "Point read-heavy queries at replicas;\n"
+         "projections stay on the primary.",
+         "Read load is 10–100× write load — this is usually the first bottleneck."),
+        ("Tier 2",
+         "Independent projection instances",
+         "Each projection is a separate event consumer.\n"
+         "Scale, redeploy, or rebuild one\n"
+         "without touching the others.",
+         "When a single projection process can't keep up with the event stream."),
+        ("Tier 3",
+         "Specialized stores",
+         "Redis for sub-ms dashboards, Elasticsearch for full-text search,\n"
+         "ClickHouse / TimescaleDB for analytics.",
+         "When PostgreSQL projections can't meet latency or query-shape requirements."),
     ]
-    for i, item in enumerate(scale_items):
-        txt(slide, f"  •  {item}", 0.65, 1.72 + i * 0.55, 5.5, 0.45,
-            sz=14, col=TEXT)
-
-    # ── Right card: Right store for the job (SUCCESS border) ─────────────────
-    rect(slide, 6.93, 1.05, 6.0, 3.0, fill=PANEL, line=SUCCESS, lw=Pt(2))
-    txt(slide, "Right store for the job", 7.18, 1.15, 5.5, 0.45,
-        sz=16, bold=True, col=SUCCESS)
-    store_items = [
-        "Redis — sub-millisecond dashboards",
-        "Elasticsearch — full-text search over events",
-        "ClickHouse / TimescaleDB — analytics & time series",
-    ]
-    for i, item in enumerate(store_items):
-        txt(slide, f"  •  {item}", 7.18, 1.72 + i * 0.55, 5.5, 0.45,
-            sz=14, col=TEXT)
-
-    # ── Bottom panel: When / Price ───────────────────────────────────────────
-    panel_y = 4.35
-    # Left card — When?
-    rect(slide, 0.4, panel_y, 6.0, 1.65, fill=PANEL, line=BORDER)
-    txt(slide, "When?", 0.6, panel_y + 0.08, 5.6, 0.35,
-        sz=14, bold=True, col=ACCENT)
-    txt(slide, "Read load typically 10–100× write load.\n"
-              "Scale reads first — it gives the most\n"
-              "performance improvement.",
-        0.6, panel_y + 0.48, 5.6, 1.05, sz=12, col=TEXT)
-
-    # Right card — Price
-    rect(slide, 6.93, panel_y, 6.0, 1.65, fill=PANEL, line=BORDER)
-    txt(slide, "Price", 7.13, panel_y + 0.08, 5.6, 0.35,
-        sz=14, bold=True, col=ACCENT)
-    txt(slide, "Eventual consistency window grows with\n"
-              "more stores. Each new technology =\n"
-              "another thing to operate.",
-        7.13, panel_y + 0.48, 5.6, 1.05, sz=12, col=TEXT)
+    for i, (tier, title, body, when) in enumerate(tiers):
+        y = 1.05 + i * 1.55
+        # Tier label
+        txt(slide, tier, 0.4, y + 0.25, 1.4, 0.45,
+            sz=14, bold=True, col=MUTED)
+        # Content card
+        rect(slide, 1.9, y, 11.03, 1.4, fill=PANEL, line=ACCENT, lw=Pt(2))
+        txt(slide, title, 2.1, y + 0.05, 10.6, 0.4,
+            sz=15, bold=True, col=ACCENT)
+        txt(slide, body, 2.1, y + 0.45, 10.6, 0.65,
+            sz=12, col=TEXT)
+        txt(slide, "↳ " + when, 2.1, y + 1.1, 10.6, 0.25,
+            sz=11, italic=True, col=MUTED)
 
     footer(slide,
            "CQRS means reads and writes scale independently")

@@ -14,47 +14,34 @@ def add_slide(prs):
          "Multiple handler instances",
          "Stateless command handlers behind a load balancer.\n"
          "Route by aggregate ID → consistent hashing;\n"
-         "optimistic concurrency catches collisions."),
+         "optimistic concurrency catches collisions.",
+         "Single PostgreSQL — handles millions of events/day."),
         ("Tier 2",
          "Shard the event store",
          "Partition event store by aggregate ID across databases.\n"
          "Each shard handles a subset of aggregates;\n"
-         "no cross-shard transactions needed."),
+         "no cross-shard transactions needed.",
+         "When one database can't keep up with write throughput."),
         ("Tier 3",
          "Event bus as backbone",
          "Kafka / EventStoreDB as primary append log.\n"
          "Ordered partitions per aggregate;\n"
-         "consumers project into any read store."),
+         "consumers project into any read store.",
+         "When you need guaranteed ordering at extreme scale — millions of events/second."),
     ]
-    for i, (tier, title, body) in enumerate(tiers):
-        y = 1.05 + i * 1.35
+    for i, (tier, title, body, when) in enumerate(tiers):
+        y = 1.05 + i * 1.55
         # Tier label
-        txt(slide, tier, 0.4, y + 0.18, 1.4, 0.45,
+        txt(slide, tier, 0.4, y + 0.25, 1.4, 0.45,
             sz=14, bold=True, col=MUTED)
         # Content card
-        rect(slide, 1.9, y, 11.03, 1.15, fill=PANEL, line=ACCENT, lw=Pt(2))
+        rect(slide, 1.9, y, 11.03, 1.4, fill=PANEL, line=ACCENT, lw=Pt(2))
         txt(slide, title, 2.1, y + 0.05, 10.6, 0.4,
             sz=15, bold=True, col=ACCENT)
         txt(slide, body, 2.1, y + 0.45, 10.6, 0.65,
             sz=12, col=TEXT)
-
-    # ── Bottom panel: When / Price ───────────────────────────────────────────
-    panel_y = 5.2
-    # Left card — When?
-    rect(slide, 0.4, panel_y, 6.0, 1.35, fill=PANEL, line=BORDER)
-    txt(slide, "When?", 0.6, panel_y + 0.08, 5.6, 0.35,
-        sz=14, bold=True, col=ACCENT)
-    txt(slide, "Single PostgreSQL handles millions of events/day.\n"
-              "You probably don't need sharding yet.",
-        0.6, panel_y + 0.48, 5.6, 0.8, sz=12, col=TEXT)
-
-    # Right card — Price
-    rect(slide, 6.93, panel_y, 6.0, 1.35, fill=PANEL, line=BORDER)
-    txt(slide, "Price", 7.13, panel_y + 0.08, 5.6, 0.35,
-        sz=14, bold=True, col=ACCENT)
-    txt(slide, "Each tier adds operational complexity.\n"
-              "Start with tier 1 — it's often enough.",
-        7.13, panel_y + 0.48, 5.6, 0.8, sz=12, col=TEXT)
+        txt(slide, "↳ " + when, 2.1, y + 1.1, 10.6, 0.25,
+            sz=11, italic=True, col=MUTED)
 
     footer(slide,
            "Aggregates don't share state — that's what makes this work.")

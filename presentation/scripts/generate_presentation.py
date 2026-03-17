@@ -46,8 +46,7 @@ from slides import slide_demo_caffeine
 from slides import slide_demo_rebuild
 from slides import slide_divider_perf
 from slides import slide_snapshotting
-from slides import slide_append_only_writes
-from slides import slide_brin_partitioning
+from slides import slide_append_only
 from slides import slide_partitions
 from slides import slide_scaling_writes
 from slides import slide_scaling_reads
@@ -84,8 +83,7 @@ SLIDE_MODULES = [
     slide_demo_rebuild,
     # Performance ES
     slide_divider_perf,
-    slide_append_only_writes,
-    slide_brin_partitioning,
+    slide_append_only,
     slide_snapshotting,
     slide_partitions,
     # Performance CQRS
