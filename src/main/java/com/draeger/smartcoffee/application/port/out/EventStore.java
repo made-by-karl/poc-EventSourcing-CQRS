@@ -9,9 +9,9 @@ public interface EventStore {
 
     void append(DomainEvent event);
 
-    List<DomainEvent> loadEvents(UUID machineId);
+    List<DomainEvent> loadEvents(UUID aggregateId);
 
     List<DomainEvent> loadAllEvents();
 
-    List<UUID> getAllMachineIds();
+    List<UUID> getAllAggregateIds();
 }

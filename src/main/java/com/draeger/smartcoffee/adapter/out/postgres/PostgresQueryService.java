@@ -91,7 +91,7 @@ public class PostgresQueryService implements CoffeeMachineQueryUseCase {
     public MachineStateAtDto getMachineStateAt(UUID machineId, Instant asOf) {
         List<DomainEvent> events = jdbc.query(
             "SELECT event_type, payload FROM domain_events " +
-            "WHERE machine_id = ? AND occurred_at <= ? ORDER BY sequence_number",
+            "WHERE aggregate_id = ? AND occurred_at <= ? ORDER BY sequence_number",
             (rs, n) -> EventSerializer.deserialize(rs.getString("payload"), rs.getString("event_type")),
             machineId, Timestamp.from(asOf));
         if (events.isEmpty()) {

@@ -65,9 +65,9 @@ SLIDE_MODULES = [
     slide_traditional,
     slide_lost,
     slide_shift,
+    slide_event_stream,
     slide_what_is_event,
     slide_aggregate,
-    slide_event_stream,
     slide_domain_events_table,
     slide_demo_intro,
     slide_demo_event_stored,
@@ -84,8 +84,8 @@ SLIDE_MODULES = [
     slide_demo_rebuild,
     # Performance ES
     slide_divider_perf,
-    slide_append_only,
     slide_snapshotting,
+    slide_append_only,
     # Performance CQRS
     slide_scaling_writes,
     slide_scaling_reads,

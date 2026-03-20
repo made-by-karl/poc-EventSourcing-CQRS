@@ -204,7 +204,7 @@
 
             <p style="font-size:0.8rem; color:#888; margin-top:0.75rem; line-height:1.4">
                 Fires two simultaneous <code>produce-coffee</code> requests to the same machine.
-                The DB <code>UNIQUE(machine_id, sequence_number)</code> constraint ensures exactly
+                The DB <code>UNIQUE(aggregate_id, sequence_number)</code> constraint ensures exactly
                 one write wins; the other gets HTTP 409 (optimistic lock).
             </p>
 

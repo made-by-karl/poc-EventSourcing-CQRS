@@ -99,7 +99,7 @@ public class CoffeeMachine {
     private void apply(DomainEvent event) {
         switch (event) {
             case MachineRegistered e -> {
-                this.id = e.getMachineId();
+                this.id = e.getAggregateId();
                 this.name = e.getName();
                 this.beansAvailable = e.getInitialBeans();
             }

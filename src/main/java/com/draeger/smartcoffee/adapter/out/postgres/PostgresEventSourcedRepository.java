@@ -48,14 +48,14 @@ public class PostgresEventSourcedRepository implements CoffeeMachineRepository {
     }
 
     @Override
-    public CoffeeMachine load(UUID machineId) {
-        Optional<SnapshotRecord> snap = snapshotStore.findLatest(machineId);
+    public CoffeeMachine load(UUID aggregateId) {
+        Optional<SnapshotRecord> snap = snapshotStore.findLatest(aggregateId);
         if (snap.isPresent()) {
             List<DomainEvent> deltaEvents = jdbc.query(
                 "SELECT event_type, payload FROM domain_events " +
-                "WHERE machine_id = ? AND sequence_number > ? ORDER BY sequence_number",
+                "WHERE aggregate_id = ? AND sequence_number > ? ORDER BY sequence_number",
                 (rs, n) -> EventSerializer.deserialize(rs.getString("payload"), rs.getString("event_type")),
-                machineId, snap.get().version());
+                aggregateId, snap.get().version());
 
             try {
                 CoffeeMachinePayload p = MAPPER.readValue(snap.get().payload(), CoffeeMachinePayload.class);
@@ -66,21 +66,25 @@ public class PostgresEventSourcedRepository implements CoffeeMachineRepository {
                     p.lastMaintenance(),
                     deltaEvents);
                 log.info("Loaded machine {} from snapshot@v={}, replayed {} delta events",
-                    machineId, snap.get().version(), deltaEvents.size());
+                    aggregateId, snap.get().version(), deltaEvents.size());
                 return machine;
             } catch (Exception e) {
-                throw new EventSerializationException("Failed to deserialize snapshot payload for machine: " + machineId, e);
+                throw new EventSerializationException("Failed to deserialize snapshot payload for machine: " + aggregateId, e);
             }
         } else {
-            List<DomainEvent> all = eventStore.loadEvents(machineId);
-            log.info("Loaded machine {} by full replay of {} events", machineId, all.size());
+            List<DomainEvent> all = eventStore.loadEvents(aggregateId);
+            log.info("Loaded machine {} by full replay of {} events", aggregateId, all.size());
             return CoffeeMachine.reconstitute(all);
         }
     }
 
     @Override
-    public boolean exists(UUID machineId) {
-        return !eventStore.loadEvents(machineId).isEmpty();
+    public boolean exists(UUID aggregateId) {
+        Integer count = jdbc.queryForObject(
+            "SELECT COUNT(1) FROM domain_events WHERE aggregate_id = ?",
+            Integer.class,
+            aggregateId);
+        return count != null && count > 0;
     }
 
     @Override

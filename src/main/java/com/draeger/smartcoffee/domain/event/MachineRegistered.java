@@ -13,11 +13,11 @@ public class MachineRegistered extends DomainEvent {
 
     @JsonCreator
     public MachineRegistered(
-            @JsonProperty("machineId")    UUID machineId,
+            @JsonProperty("aggregateId")  UUID aggregateId,
             @JsonProperty("name")         String name,
             @JsonProperty("initialBeans") int initialBeans,
             @JsonProperty("occurredAt")   Instant occurredAt) {
-        super(machineId, occurredAt);
+        super(aggregateId, AggregateTypes.COFFEE_MACHINE, occurredAt);
         this.name = name;
         this.initialBeans = initialBeans;
     }

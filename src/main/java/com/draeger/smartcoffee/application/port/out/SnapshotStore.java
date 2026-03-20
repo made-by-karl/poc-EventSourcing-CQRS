@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface SnapshotStore {
 
-    Optional<SnapshotRecord> findLatest(UUID machineId);
+    Optional<SnapshotRecord> findLatest(UUID aggregateId);
 
     void save(SnapshotRecord snapshot);
 

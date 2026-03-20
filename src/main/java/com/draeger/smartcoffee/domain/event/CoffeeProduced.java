@@ -15,12 +15,12 @@ public class CoffeeProduced extends DomainEvent {
 
     @JsonCreator
     public CoffeeProduced(
-            @JsonProperty("machineId")     UUID machineId,
+            @JsonProperty("aggregateId")   UUID aggregateId,
             @JsonProperty("coffeeType")    CoffeeType coffeeType,
             @JsonProperty("user")          String user,
             @JsonProperty("beansConsumed") int beansConsumed,
             @JsonProperty("occurredAt")    Instant occurredAt) {
-        super(machineId, occurredAt);
+        super(aggregateId, AggregateTypes.COFFEE_MACHINE, occurredAt);
         this.coffeeType = coffeeType;
         this.user = user;
         this.beansConsumed = beansConsumed;

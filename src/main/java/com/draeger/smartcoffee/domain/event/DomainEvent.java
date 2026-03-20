@@ -5,16 +5,22 @@ import java.util.UUID;
 
 public abstract class DomainEvent {
 
-    private final UUID machineId;
+    private final UUID aggregateId;
+    private final String aggregateType;
     private final Instant occurredAt;
 
-    protected DomainEvent(UUID machineId, Instant occurredAt) {
-        this.machineId = machineId;
+    protected DomainEvent(UUID aggregateId, String aggregateType, Instant occurredAt) {
+        this.aggregateId = aggregateId;
+        this.aggregateType = aggregateType;
         this.occurredAt = occurredAt;
     }
 
-    public UUID getMachineId() {
-        return machineId;
+    public UUID getAggregateId() {
+        return aggregateId;
+    }
+
+    public String getAggregateType() {
+        return aggregateType;
     }
 
     public Instant getOccurredAt() {

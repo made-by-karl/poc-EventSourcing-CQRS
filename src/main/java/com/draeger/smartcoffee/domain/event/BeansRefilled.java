@@ -13,11 +13,11 @@ public class BeansRefilled extends DomainEvent {
 
     @JsonCreator
     public BeansRefilled(
-            @JsonProperty("machineId")  UUID machineId,
-            @JsonProperty("user")       String user,
-            @JsonProperty("beansAdded") int beansAdded,
-            @JsonProperty("occurredAt") Instant occurredAt) {
-        super(machineId, occurredAt);
+            @JsonProperty("aggregateId") UUID aggregateId,
+            @JsonProperty("user")        String user,
+            @JsonProperty("beansAdded")  int beansAdded,
+            @JsonProperty("occurredAt")  Instant occurredAt) {
+        super(aggregateId, AggregateTypes.COFFEE_MACHINE, occurredAt);
         this.user = user;
         this.beansAdded = beansAdded;
     }

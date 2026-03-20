@@ -20,9 +20,9 @@ On startup, three machines are registered automatically and their `MachineRegist
 are logged as JSON:
 
 ```
-INFO  EVENT: {"eventType":"MachineRegistered","machineId":"...","name":"OR Machine 1","initialBeans":60,...}
-INFO  EVENT: {"eventType":"MachineRegistered","machineId":"...","name":"OR Machine 2","initialBeans":60,...}
-INFO  EVENT: {"eventType":"MachineRegistered","machineId":"...","name":"Doctors' Lounge","initialBeans":40,...}
+INFO  EVENT: {"eventType":"MachineRegistered","aggregateId":"...","name":"OR Machine 1","initialBeans":60,...}
+INFO  EVENT: {"eventType":"MachineRegistered","aggregateId":"...","name":"OR Machine 2","initialBeans":60,...}
+INFO  EVENT: {"eventType":"MachineRegistered","aggregateId":"...","name":"Doctors' Lounge","initialBeans":40,...}
 ```
 
 ## Using the application

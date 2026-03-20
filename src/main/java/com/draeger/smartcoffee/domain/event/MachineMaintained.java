@@ -14,12 +14,12 @@ public class MachineMaintained extends DomainEvent {
 
     @JsonCreator
     public MachineMaintained(
-            @JsonProperty("machineId")              UUID machineId,
+            @JsonProperty("aggregateId")            UUID aggregateId,
             @JsonProperty("user")                   String user,
             @JsonProperty("maintainedAt")           Instant maintainedAt,
             @JsonProperty("beansAfterMaintenance")  int beansAfterMaintenance,
             @JsonProperty("occurredAt")             Instant occurredAt) {
-        super(machineId, occurredAt);
+        super(aggregateId, AggregateTypes.COFFEE_MACHINE, occurredAt);
         this.user = user;
         this.maintainedAt = maintainedAt;
         this.beansAfterMaintenance = beansAfterMaintenance;

@@ -33,7 +33,7 @@ def add_slide(prs):
         7.12, 4.52, 5.57, 0.55, sz=14, col=TEXT)
 
     footer(slide,
-           "UNIQUE(machine_id, sequence_number) IS the lock. No explicit locking code.")
+           "UNIQUE(aggregate_id, sequence_number) IS the lock. No explicit locking code.")
     notes(slide,
           "[DEMO] Click 'Fire Concurrent Writes'. One box goes green, one red. "
           "Refresh domain_events to confirm only one row was inserted. "

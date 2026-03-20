@@ -57,21 +57,21 @@ public class PostgresSnapshotStore implements SnapshotStore {
 
     @Override
     public void maybeSnapshot(CoffeeMachine machine) {
-        UUID machineId = machine.getId();
+        UUID aggregateId = machine.getId();
 
         long maxSeq = Optional.ofNullable(jdbc.queryForObject(
-            "SELECT MAX(sequence_number) FROM domain_events WHERE machine_id = ?",
-            Long.class, machineId
+            "SELECT MAX(sequence_number) FROM domain_events WHERE aggregate_id = ?",
+            Long.class, aggregateId
         )).orElse(0L);
-        long snapVersion = findLatest(machineId).map(SnapshotRecord::version).orElse(0L);
+        long snapVersion = findLatest(aggregateId).map(SnapshotRecord::version).orElse(0L);
         if (maxSeq - snapVersion >= threshold) {
             try {
                 String json = MAPPER.writeValueAsString(
                     new CoffeeMachinePayload(machine.getName(), machine.getBeansAvailable(), machine.getLastMaintenance()));
-                save(new SnapshotRecord(machineId, "CoffeeMachine", maxSeq, json));
-                log.info("Snapshot taken for machine {} at version={}", machineId, maxSeq);
+                save(new SnapshotRecord(aggregateId, "CoffeeMachine", maxSeq, json));
+                log.info("Snapshot taken for machine {} at version={}", aggregateId, maxSeq);
             } catch (Exception e) {
-                throw new EventSerializationException("Failed to serialize snapshot for machine: " + machineId, e);
+                throw new EventSerializationException("Failed to serialize snapshot for machine: " + aggregateId, e);
             }
         }
     }

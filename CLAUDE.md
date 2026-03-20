@@ -40,7 +40,7 @@ adapter/out/   — InMemoryEventStore, InMemoryEventSourcedRepository
 
 1. Controller receives HTTP request → creates Command record
 2. `CoffeeMachineCommandService` loads aggregate via `CoffeeMachineRepository`
-3. Repository calls `EventStore.loadEvents(machineId)` and replays them through `CoffeeMachine.reconstitute()`
+3. Repository calls `EventStore.loadEvents(aggregateId)` and replays them through `CoffeeMachine.reconstitute()`
 4. Service calls `aggregate.handle(command)` → returns new `DomainEvent`
 5. Event is appended to `EventStore`
 

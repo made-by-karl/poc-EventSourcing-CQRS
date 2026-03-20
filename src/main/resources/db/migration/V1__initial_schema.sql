@@ -1,14 +1,15 @@
 -- Append-only event log with per-aggregate ordering + optimistic concurrency
 CREATE TABLE domain_events (
     id              BIGSERIAL    PRIMARY KEY,
-    machine_id      UUID         NOT NULL,
+    aggregate_id    UUID         NOT NULL,
     sequence_number BIGINT       NOT NULL,
+    aggregate_type  VARCHAR(100) NOT NULL,
     event_type      VARCHAR(100) NOT NULL,
     payload         JSONB        NOT NULL,
     occurred_at     TIMESTAMPTZ  NOT NULL,
-    CONSTRAINT uq_machine_sequence UNIQUE (machine_id, sequence_number)
+    CONSTRAINT uq_aggregate_sequence UNIQUE (aggregate_id, sequence_number)
 );
-CREATE INDEX idx_domain_events_machine_id ON domain_events (machine_id, sequence_number);
+CREATE INDEX idx_domain_events_aggregate_id ON domain_events (aggregate_id, sequence_number);
 CREATE INDEX idx_domain_events_occurred_at ON domain_events (occurred_at);
 
 -- Current state per machine (bean level + cups produced)
