@@ -5,8 +5,8 @@ from common import *
 
 from pptx.util import Inches
 
-# Absolute path to the product image (sits next to the pptx output)
-_IMG = os.path.join(os.path.dirname(__file__), "..", "..", "draeger-smart-coffee-machine.png")
+# Absolute path to the product image
+_IMG = os.path.join(os.path.dirname(__file__), "draeger-smart-coffee-machine.png")
 
 
 def add_slide(prs):

@@ -109,3 +109,27 @@ DEBUG=true ./gradlew bootRun
 ```bash
 ./gradlew test
 ```
+
+## Generating the presentation
+
+The `presentation/` directory contains the slide deck "Facts over State" (`facts-over-state.pptx`).
+You can regenerate it in two ways:
+
+### Option A: Docker (no Python installation needed)
+
+**Prerequisites:** Docker
+
+```bash
+cd presentation
+docker build -t smart-coffee-slides .
+docker run --rm -v "$(pwd):/presentation" smart-coffee-slides
+```
+
+### Option B: Run directly with Python
+
+**Prerequisites:** Python 3, `python-pptx` package
+
+```bash
+pip install python-pptx
+python3 presentation/scripts/generate_presentation.py
+```
